@@ -117,8 +117,10 @@ Topology::ShortestPathGen()
 
 	//find shortest path
 	for(uint32_t row=0;row<m_nodeNum;row++)
-		for(uint32_t col=row+1;col<m_nodeNum;col++)
+		for(uint32_t col=0;col<m_nodeNum;col++)
 		{
+			if(row==col)
+				continue;
 			vector<uint32_t>tempPath;
 			uint32_t temp=path[row][col];
 			tempPath.push_back(row);

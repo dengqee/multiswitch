@@ -44,14 +44,20 @@ private:
 	uint32_t m_coarseFlowNum;
 	uint32_t m_fineFlowNum;
 	set<uint32_t> m_measureNodes;//nodes for measure
+	uint32_t m_measureNodeNum;//the number of measure nodes
 
 public:
 	Network(const string &topoFileName, const string &flowFileName);
+
+	void SetMeasureNodeNum(uint32_t n);
+
+	uint32_t GetMeasureNodes(set<uint32_t> &measureNodes);//return measureNodesnum
 	
 	void ReadFlow(const string &flowFileName);
 
-	
+	void GenFlowPath(); 
 
+	void Print();//print infomation of network
 
 };
 

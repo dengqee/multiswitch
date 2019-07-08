@@ -21,9 +21,10 @@ int main()
 
 	string pathFileName=dir+topoName+"Path.txt";
 
-	//Network geant(topoFileName,flowFileName);
+	Network geant(topoFileName,flowFileName);
+	geant.GenFlowPath();
 
-
+/*
 	Topology geant(topoFileName);
 	geant.ShortestPathGen();
 	//geant.WritePath(pathFileName);
@@ -35,7 +36,7 @@ int main()
 			cout<<i<<" ";
 	else
 		cout<<"can't find path"<<endl;
-
+*/
 
 
 	return 0;

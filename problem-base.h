@@ -19,6 +19,8 @@ protected:
 public:
 	ProblemBase();
 
+	ProblemBase(Network network);
+
 	virtual	~ProblemBase();
 
 	virtual SetNetwork(const Network &network) = 0;

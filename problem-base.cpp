@@ -10,6 +10,12 @@ using namespace std;
 
 ProblemBase::ProblemBase(){}
 
+ProblemBase::ProblemBase(Network network):
+	m_network(network)
+{
+
+}
+
 ProblemBase::~ProblemBase(){}
 
 
