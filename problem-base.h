@@ -7,6 +7,8 @@
 #ifndef PROBLEM_BASE_H
 #define PROBLEM_BASE_H
 
+#include<memory>
+#include<stdint.h>
 #include<iostream>
 #include"topology.h"
 #include"network.h"
@@ -14,20 +16,22 @@ using namespace std;
 class ProblemBase
 {
 protected:
-	Network m_network;
+	shared_ptr<Network> m_network;
 		
 public:
 	ProblemBase();
 
-	ProblemBase(Network network);
+	ProblemBase(shared_ptr<Network> network);
 
 	virtual	~ProblemBase();
 
-	virtual SetNetwork(const Network &network) = 0;
+	virtual void SetNetwork(const shared_ptr<Network> network) = 0;
 
-	virtual Network GetNetwork() = 0;
+	virtual shared_ptr<Network> GetNetwork() = 0;
 
 	virtual void run() = 0;
+
+	virtual void Print()=0;
 
 };
 #endif /* PROBLEM_BASE_H */

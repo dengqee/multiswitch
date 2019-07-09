@@ -9,6 +9,7 @@
 #include"topology.h"
 #include"network.h"
 #include<string>
+#include"plasement-problem.h"
 
 using namespace std;
 int main()
@@ -21,22 +22,34 @@ int main()
 
 	string pathFileName=dir+topoName+"Path.txt";
 
-	Network geant(topoFileName,flowFileName);
-	geant.GenFlowPath();
+	shared_ptr<Network> geant(new Network(topoFileName,flowFileName));
+	geant->GenFlowPath();
 
-/*
-	Topology geant(topoFileName);
-	geant.ShortestPathGen();
+	for(uint32_t n=10;n<20;n++)
+	{
+		PlasementProblem plasementProblem(geant,n);
+		plasementProblem.run();
+		plasementProblem.Print();
+
+	}
+
+	vector<uint32_t>p;
+	geant->m_topo->GetPath(22,16,p);
+
+
+	/*
+	   Topology geant(topoFileName);
+	   geant.ShortestPathGen();
 	//geant.WritePath(pathFileName);
 	geant.ReadPath(pathFileName);
 
 	vector<uint32_t> path;
 	if(geant.GetPath(231,10,path))
-		for(auto i:path)
-			cout<<i<<" ";
+	for(auto i:path)
+	cout<<i<<" ";
 	else
-		cout<<"can't find path"<<endl;
-*/
+	cout<<"can't find path"<<endl;
+	*/
 
 
 	return 0;

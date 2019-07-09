@@ -12,7 +12,8 @@
 
 using namespace std;
 
-Flow::Flow(uint32_t src, uint32_t dst, uint32_t weight):
+Flow::Flow(uint32_t id,uint32_t src, uint32_t dst, uint32_t weight):
+	m_id(id),
 	m_src(src),
 	m_dst(dst),
 	m_weight(weight),
@@ -29,15 +30,34 @@ Flow::SetPaths(const LinkPaths &linkPaths, const NodePaths &nodePaths)
 	m_nodePaths = nodePaths;
 }
 
+inline bool 
+operator < (const Flow &lhs, const Flow &rhs)
+{
+	return lhs.m_id<rhs.m_id;
+}
+
 Network::Network(const string &topoFileName, const string &flowFileName):
-	m_topo(topoFileName),
-	m_flows(vector<Flow>()),
+	m_topo(new Topology(topoFileName)),
+	m_flows(vector<shared_ptr<Flow> >()),
 	m_coarseFlowNum(0),
 	m_fineFlowNum(0),
+	m_flowOnNode(map<uint32_t,set<shared_ptr<Flow> > >()),
 	m_measureNodes(set<uint32_t>()),
 	m_measureNodeNum(0)
 {
 	ReadFlow(flowFileName);
+}
+
+Network::Network(const Network &network):
+	m_topo(network.m_topo),
+	m_flows(network.m_flows),
+	m_coarseFlowNum(network.m_coarseFlowNum),
+	m_fineFlowNum(network.m_fineFlowNum),
+	m_flowOnNode(network.m_flowOnNode),
+	m_measureNodes(network.m_measureNodes),
+	m_measureNodeNum(network.m_measureNodeNum)
+{
+
 }
 
 void 
@@ -71,6 +91,7 @@ Network::ReadFlow(const string &flowFileName)
 	uint32_t src,dst,weight;
 	string line;
 	istringstream lineBuffer;
+	uint32_t flowID=0;
 	while(getline(ifs,line))
 	{
 		//read src,dst,weight
@@ -82,9 +103,10 @@ Network::ReadFlow(const string &flowFileName)
 		lineBuffer.str(line);
 		lineBuffer>>weight;
 		//create flow
-		Flow flow(src,dst,weight);
+		shared_ptr<Flow> flow(new Flow(flowID,src,dst,weight));
 		m_flows.push_back(flow);
 		m_fineFlowNum+=weight;
+		flowID++;
 	}
 	m_coarseFlowNum=m_flows.size();
 	ifs.close();
@@ -101,15 +123,16 @@ Network::GenFlowPath()
 		cerr<<"flows is empty, please call ReadFlow first"<<endl;
 		exit(1);
 	}
-	m_topo.ShortestPathGen();
+	m_topo->ShortestPathGen();
 	for(auto flow:m_flows)
 	{
 		vector<uint32_t>nodePath;
-		int length=m_topo.GetPath(flow.m_src,flow.m_dst,nodePath);
-		flow.m_nodePaths.push_back(nodePath);
+		int length=m_topo->GetPath(flow->m_src,flow->m_dst,nodePath);
+		flow->m_nodePaths.push_back(nodePath);
+
 		if(length==0)
 		{
-			cout<<flow.m_src<<"->"<<flow.m_dst<<" can't find path"<<endl;
+			cout<<flow->m_src<<"->"<<flow->m_dst<<" can't find path"<<endl;
 			continue;
 		}
 		//generate linkPaths
@@ -117,10 +140,26 @@ Network::GenFlowPath()
 		for(size_t i=0;i<nodePath.size()-1;i++)
 		{
 			linkPath.push_back(make_pair(nodePath[i],nodePath[i+1]));	
+
+			//generate m_flowOnNode 
+			m_flowOnNode[nodePath[i]].insert(flow);
 		}
-		flow.m_linkPaths.push_back(linkPath);
+		m_flowOnNode[nodePath[nodePath.size()-1]].insert(flow);
+		flow->m_linkPaths.push_back(linkPath);
 	}
 
+}
+
+set<shared_ptr<Flow> >
+Network::GetFlowOnNode(uint32_t nodeID)
+{
+	auto it=m_flowOnNode.find(nodeID);
+	if(it==m_flowOnNode.end())
+	{
+		cerr<<"can't find node "<<nodeID<<" in m_flowOnNode"<<endl;
+		exit(1);
+	}
+	return it->second;
 }
 
 void 

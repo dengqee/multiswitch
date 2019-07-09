@@ -39,6 +39,12 @@ Topology::~Topology()
 
 }
 
+uint32_t 
+Topology::GetNodeNum()
+{
+	return m_nodeNum;
+}
+
 void
 Topology::ReadTopology(const string &topoName)
 {

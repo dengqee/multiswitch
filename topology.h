@@ -7,6 +7,7 @@
 #ifndef TOPOLOGY_H
 #define TOPOLOGY_H
 
+#include<stdint.h>
 #include<iostream>
 #include<cstdlib>
 #include<vector>
@@ -21,7 +22,7 @@ class Topology
 private:
 	uint32_t m_nodeNum;
 	uint32_t m_linkNum;
-	vector<pair<uint32_t,uint32_t>>m_links;
+	vector<pair<uint32_t,uint32_t> >m_links;
 	map<pair<uint32_t,uint32_t>,vector<uint32_t> > m_paths;//all shortest paths
 public:
 	Topology();
@@ -30,6 +31,8 @@ public:
 	Topology(const Topology &topo);
 
 	virtual ~Topology();
+
+	uint32_t GetNodeNum();
 
 	void ReadTopology(const string &topoName);
 
