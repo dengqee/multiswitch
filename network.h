@@ -49,7 +49,7 @@ public:
 	vector<shared_ptr<Flow> > m_flows;
 	uint32_t m_coarseFlowNum;
 	uint32_t m_fineFlowNum;
-	map<uint32_t, set<shared_ptr<Flow> > >m_flowOnNode;//the set of flow of every node
+	map<uint32_t, set<uint32_t> >m_flowOnNode;//the set of flow ID of every node
 	set<uint32_t> m_measureNodes;//nodes for measure
 	uint32_t m_measureNodeNum;//the number of measure nodes
 
@@ -65,7 +65,7 @@ public:
 
 	void GenFlowPath(); 
 
-	set<shared_ptr<Flow> > GetFlowOnNode(uint32_t nodeID);
+	set<uint32_t> GetFlowOnNode(uint32_t nodeID);
 
 	void Print();//print infomation of network
 

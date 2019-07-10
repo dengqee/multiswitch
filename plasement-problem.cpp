@@ -80,15 +80,8 @@ PlasementProblem::run()
 		if(unusedNodes.size()==0)
 			break;
 		uint32_t maxNode=*(unusedNodes.begin());
-		set<shared_ptr<Flow> > flowOnNode=m_network->GetFlowOnNode(maxNode);
-		set<uint32_t> flowIDOnNode;
-
-		for(auto it=flowOnNode.begin();it!=flowOnNode.end();it++)
-		{
-			flowIDOnNode.insert((*it)->m_id);
-		}
+		set<uint32_t> flowIDOnNode=m_network->GetFlowOnNode(maxNode);
 		
-
 		set<uint32_t> diff;
 		set<uint32_t> diff_max;
 		set_difference(flowIDOnNode.begin(),flowIDOnNode.end(),coveredFlows.begin(),coveredFlows.end(),inserter(diff,diff.begin()));
@@ -98,16 +91,10 @@ PlasementProblem::run()
 		//find maximizing the ^{si|S}
 		for(auto it=unusedNodes.begin();it!=unusedNodes.end();it++)
 		{
-			flowOnNode.clear();
 			flowIDOnNode.clear();
 			diff.clear();
 
-			flowOnNode=m_network->GetFlowOnNode(*it);
-
-			for(auto i=flowOnNode.begin();i!=flowOnNode.end();i++)
-			{
-				flowIDOnNode.insert((*i)->m_id);
-			}
+			flowIDOnNode=m_network->GetFlowOnNode(*it);
 
 			set_difference(flowIDOnNode.begin(),flowIDOnNode.end(),coveredFlows.begin(),coveredFlows.end(),inserter(diff,diff.begin()));
 			if(maxFlowInc<diff.size())

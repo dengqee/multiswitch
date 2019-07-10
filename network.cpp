@@ -41,7 +41,7 @@ Network::Network(const string &topoFileName, const string &flowFileName):
 	m_flows(vector<shared_ptr<Flow> >()),
 	m_coarseFlowNum(0),
 	m_fineFlowNum(0),
-	m_flowOnNode(map<uint32_t,set<shared_ptr<Flow> > >()),
+	m_flowOnNode(map<uint32_t,set<uint32_t> >()),
 	m_measureNodes(set<uint32_t>()),
 	m_measureNodeNum(0)
 {
@@ -142,15 +142,15 @@ Network::GenFlowPath()
 			linkPath.push_back(make_pair(nodePath[i],nodePath[i+1]));	
 
 			//generate m_flowOnNode 
-			m_flowOnNode[nodePath[i]].insert(flow);
+			m_flowOnNode[nodePath[i]].insert(flow->m_id);
 		}
-		m_flowOnNode[nodePath[nodePath.size()-1]].insert(flow);
+		m_flowOnNode[nodePath[nodePath.size()-1]].insert(flow->m_id);
 		flow->m_linkPaths.push_back(linkPath);
 	}
 
 }
 
-set<shared_ptr<Flow> >
+set<uint32_t>
 Network::GetFlowOnNode(uint32_t nodeID)
 {
 	auto it=m_flowOnNode.find(nodeID);
