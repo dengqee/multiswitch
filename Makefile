@@ -1,5 +1,5 @@
 GCC = g++
-CFLAGS = -g -std=c++11
+CFLAGS = -pthread -g -std=c++11
 FILES = main.out
 LIB = main.o topology.o network.o plasement-problem.o problem-base.o \
 	  measure-assignment-problem.o

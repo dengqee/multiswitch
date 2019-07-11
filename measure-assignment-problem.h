@@ -12,23 +12,34 @@
 
 using namespace std;
 
+pthread_mutex_t mutex;//互斥锁
+
 class MeasureAssignmentProblem: public ProblemBase
 {
 private:
 	vector<vector<uint32_t> > m_x;//solve
+	vector<uint32_t>m_measureNodes;
 
 	double m_lambda0;//initial lambda
-	vector<double> m_lambdas;//recode multi lambda value on every iterate
-	uint32_t m_sizeLambda;//the size of m_lambdas
+	vector<double> m_objVal;//recode multi objval value on every iterate
+	uint32_t m_objValNum;//the size of m_objVal
 	double m_thetaLambda;//step length of lambda
 	
 	vector<double> m_mu0;//initial mu
-	vector<vector<double> > m_mus;//recode multi mu value on every iterate
-	uint32_t m_sizeMu;//the size of m_mus
+	vector<double> m_objValDual;//recode multi m_objValDual value on every iterate
+	uint32_t m_objValDualNum;//the number of m_objValDual
 	double m_thetaMu;//step length of mu
 
 	double m_err;//stop iterate condition
 
+	//middle value
+	double m_lambda_tmp;
+	vector<double> m_mu_tmp;
+	vector<vector<uint32_t> > m_x_tmp;
+	struct thread_arg{
+		MeasureAssignmentProblem* ptr;
+		uint32_t n;
+	};
 
 public:
 	MeasureAssignmentProblem();
@@ -39,13 +50,13 @@ public:
 	
 	void SetLambda0(double lambda0);
 
-	void SetLambdaNum(uint32_t n);//set m_sizeLambda
+	void SetObjNum(uint32_t n);//set m_objValNum
 
 	void SetLambdaStepLength(double length);//set m_thetaLambda
 
 	void SetMu0(vector<double> mu0);
 
-	void SetMuNum(uint32_t n);//set m_sizeMu
+	void SetObjDualNum(uint32_t n);//set m_objValDualNum
 
 	void SetMuStepLength(double length);//set m_thetaMu
 
@@ -55,11 +66,25 @@ public:
 
 	virtual shared_ptr<Network> GetNetwork();
 
+	void UpdateLambda(double &lambda,const vector<double>&mu_star);
+
+	void UpdateMu(vector<double>&Mu,const double &lambda,const vector<vector<uint32_t> > &x);
+
+	bool IsStopLambda();
+
+	bool IsStopMu();
+
+	double CalObjVal(const double &lambda);
+
+	double CalObjValDual(const double &lambda,const vector<double> &mu,const vector<vector<uint32_t> > &x_star);
+
 	virtual void run();
 
 	void SolveDualProblem(const double &lambda,const vector<double> &mu);//solve dual problem
 
-	void SolveSubProblem(const double &lambda,const vector<double>&mu);//multi-thread
+	void SolveSubProblem(uint32_t n);//multi-thread,n th thread
+
+	static void* Thread(void *arg);
 
 
 	virtual void Print();
