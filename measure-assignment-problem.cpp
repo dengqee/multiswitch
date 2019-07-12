@@ -179,12 +179,46 @@ MeasureAssignmentProblem::CalObjValDual(const double &lambda,const vector<double
 void 
 MeasureAssignmentProblem::run()
 {
+	m_objVal.clear();
+	m_objValDual.clear();
 
+	m_lambda_tmp=m_lambda0;
+	m_objVal.push_back(m_lambda_tmp);
+	while(1)
+	{
+		m_mu_tmp=m_mu0;
+		while(1)
+		{
+			SolveDualProblem(m_lambda_tmp,m_mu_tmp);
+			double objDualVal=CalObjValDual(m_lambda_tmp,m_mu_tmp,m_x_tmp);
+			if(m_objValDual.size()>=m_objValDualNum)
+				m_objValDual.erase(m_objValDual.begin());
+			m_objValDual.push_back(objDualVal);
+
+			if(IsStopMu())
+			{
+				UpdateLambda(m_lambda_tmp,m_mu_tmp);
+				break;
+			}
+			UpdateMu(m_mu_tmp,m_lambda_tmp,m_x_tmp);
+
+		}
+		double objVal=CalObjVal(m_lambda_tmp);
+		if(m_objVal.size()>=m_objValNum)
+			m_objVal.erase(m_objVal.begin());
+		m_objVal.push_back(objVal);
+
+		if(IsStopLambda())
+			break;
+	}
 }
 
 void 
 MeasureAssignmentProblem::SolveDualProblem(const double &lambda,const vector<double> &mu)
 {
+	m_x_tmp.clear();
+	m_x_tmp.resize(m_network->m_coarseFlowNum,vector<uint32_t>());
+
 	uint32_t thread_num=m_network->m_coarseFlowNum;
 	pthread_t* threads=new pthread_t[thread_num];
 	int res;
