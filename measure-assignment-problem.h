@@ -12,8 +12,15 @@
 
 using namespace std;
 
-pthread_mutex_t mutex;//互斥锁
+#define THREAD_LOG 0//print thread log
+#define LAMBDA_LOG 1
+#define MU_LOG 0
 
+class MeasureAssignmentProblem;
+struct thread_arg{
+	MeasureAssignmentProblem* ptr;
+	uint32_t n;
+};
 class MeasureAssignmentProblem: public ProblemBase
 {
 private:
@@ -35,11 +42,12 @@ private:
 	//middle value
 	double m_lambda_tmp;
 	vector<double> m_mu_tmp;
-	vector<vector<uint32_t> > m_x_tmp;
-	struct thread_arg{
-		MeasureAssignmentProblem* ptr;
-		uint32_t n;
-	};
+	vector<vector<uint32_t> > *m_x_tmp;
+	vector<uint32_t>m_load_tmp;
+	//uint32_t** m_x_tmp;
+//	thread_arg *m_arg;
+	pthread_mutex_t mutex;
+	uint32_t thread_cnt;
 
 public:
 	MeasureAssignmentProblem();
@@ -89,8 +97,9 @@ public:
 
 	virtual void Print();
 
+	bool IsFeasible();
 	
-
+	uint32_t CalMaxLoad(vector<vector<uint32_t> >&x);
 
 
 };
