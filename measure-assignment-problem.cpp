@@ -76,9 +76,10 @@ MeasureAssignmentProblem::SetMuStepLength(double length)
 }
 
 void
-MeasureAssignmentProblem::SetStopIterCon(double err)
+MeasureAssignmentProblem::SetStopIterCon(double lambda_err,double mu_err)
 {
-	m_err=err;
+	m_lambda_err=lambda_err;
+	m_mu_err=mu_err;
 }
 
 void
@@ -95,7 +96,7 @@ MeasureAssignmentProblem::GetNetwork()
 /*}}}*/
 
 void
-MeasureAssignmentProblem::UpdateLambda(double &lambda,const vector<double>&mu_star)
+MeasureAssignmentProblem::UpdateLambda(double &lambda,const vector<double>&mu_star,const vector<uint32_t>&load)
 {
 	double sum=0;
 	cout<<"mu=";
@@ -105,8 +106,14 @@ MeasureAssignmentProblem::UpdateLambda(double &lambda,const vector<double>&mu_st
 		cout<<" "<<*it;
 	}
 	cout<<endl;
-	lambda=lambda-m_thetaLambda+m_thetaLambda*sum;
-	//lambda=lambda+m_thetaLambda-m_thetaLambda*sum;
+	if(IsFeasible())
+	{
+		lambda=*max_element(load.begin(),load.end());
+		lambda=lambda-m_thetaLambda;
+
+	}
+	else
+		lambda=lambda+m_thetaLambda;
 }
 
 void 
@@ -145,7 +152,7 @@ MeasureAssignmentProblem::IsStopLambda()
 	for(auto it=m_objVal.begin();it!=m_objVal.end();it++)
 		var+=(*it-ave)*(*it-ave);
 	var/=m_objVal.size();
-	return var<m_err;
+	return var<m_lambda_err;
 
 
 }
@@ -166,7 +173,7 @@ MeasureAssignmentProblem::IsStopMu()
 	for(auto it=m_objValDual.begin();it!=m_objValDual.end();it++)
 		var+=(*it-ave)*(*it-ave);
 	var/=m_objValDual.size();
-	return var<m_err;
+	return var<m_mu_err;
 
 }
 
@@ -216,7 +223,7 @@ MeasureAssignmentProblem::run()
 			cout<<"objDual="<<*(m_objValDual.rbegin())<<endl;
 		}
 		cout<<"*************************************************************"<<endl;
-		cout<<"lambda iterate time: "<<k++<<endl;
+		cout<<"lambda iterate time: "<<k<<endl;
 		cout<<"Lambda= "<<m_lambda_tmp<<endl;
 		cout<<"objVal= "<<objVal<<endl;
 
@@ -246,7 +253,7 @@ MeasureAssignmentProblem::run()
 
 			if(IsStopMu())
 			{
-				UpdateLambda(m_lambda_tmp,m_mu_tmp);
+				UpdateLambda(m_lambda_tmp,m_mu_tmp,m_load_tmp);
 				break;
 			}
 			UpdateMu(m_mu_tmp,m_lambda_tmp,*m_x_tmp);
@@ -260,6 +267,7 @@ MeasureAssignmentProblem::run()
 
 		if(IsStopLambda())
 			break;
+		k++;
 	}
 }
 
@@ -275,16 +283,13 @@ MeasureAssignmentProblem::SolveDualProblem(const double &lambda,const vector<dou
 	int res;
 	thread_cnt=0;	
 	pthread_mutex_init(&mutex,NULL);//initialize mutex
-//	pthread_mutex_unlock(&mutex);
 	//create thread
 	thread_arg* arg=new thread_arg[thread_num];
 	for(uint32_t n=0;n<thread_num;n++)
-	//for(uint32_t n=0;n<1;n++)
 	{
 		arg[n].n=n;
 		arg[n].ptr=this;
 		res=pthread_create(&(threads[n]),NULL,Thread,(void*)&(arg[n]));
-		//pthread_detach(threads[n]);
 		if(res!=0)
 		{
 			cout<<"\tCreated thread "<<n<<" failed!"<<endl;
@@ -299,7 +304,6 @@ MeasureAssignmentProblem::SolveDualProblem(const double &lambda,const vector<dou
 	//for(int n=0;n<1;n++)
 	{
 		res=pthread_join(threads[n],NULL);
-	//	thread_cnt+=(*m_x_tmp)[n].size();
 #if THREAD_LOG
 		if(!res){
 			cout<<"\tThread "<<n<<" joined"<<endl;
@@ -309,7 +313,6 @@ MeasureAssignmentProblem::SolveDualProblem(const double &lambda,const vector<dou
 			cout<<"\tThread "<<n<<" join failed"<<endl;
 #endif
 	}
-	//cout<<thread_cnt<<endl;
 
 	pthread_mutex_destroy(&mutex);
 	delete[] arg;
@@ -360,7 +363,6 @@ MeasureAssignmentProblem::SolveSubProblem(uint32_t n)
 
 	pthread_mutex_lock(&mutex);//lock
 	(*m_x_tmp)[i]=xi;
-	//thread_cnt+=m_x_tmp[i].size();
 #if THREAD_LOG
 	cout<<"\tthread "<<n<<" end"<<endl;
 #endif

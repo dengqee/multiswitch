@@ -37,7 +37,8 @@ private:
 	uint32_t m_objValDualNum;//the number of m_objValDual
 	double m_thetaMu;//step length of mu
 
-	double m_err;//stop iterate condition
+	double m_lambda_err;//stop iterate condition
+	double m_mu_err;
 
 	//middle value
 	double m_lambda_tmp;
@@ -68,13 +69,13 @@ public:
 
 	void SetMuStepLength(double length);//set m_thetaMu
 
-	void SetStopIterCon(double err);///set m_err
+	void SetStopIterCon(double lambda_err,double mu_err);///set m_err
 
 	virtual void SetNetwork(const shared_ptr<Network> network);
 
 	virtual shared_ptr<Network> GetNetwork();
 
-	void UpdateLambda(double &lambda,const vector<double>&mu_star);
+	void UpdateLambda(double &lambda,const vector<double>&mu_star,const vector<uint32_t>&load);
 
 	void UpdateMu(vector<double>&Mu,const double &lambda,const vector<vector<uint32_t> > &x);
 
@@ -84,7 +85,7 @@ public:
 
 	double CalObjVal(const double &lambda);
 
-	double CalObjValDual(const double &lambda,const vector<double> &mu,const vector<vector<uint32_t> > &x_star);
+	double CalObjValDual(const double &lambda,const vector<double> &mu,const vector<vector<uint32_t> > &x);
 
 	virtual void run();
 

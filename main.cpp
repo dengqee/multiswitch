@@ -31,13 +31,13 @@ int main()
 	plasementProblem.Print();
 
 	MeasureAssignmentProblem assign(geant);
-	assign.SetLambda0(3000);
+	assign.SetLambda0(5000);
 	assign.SetObjNum(20);
-	assign.SetLambdaStepLength(100);
+	assign.SetLambdaStepLength(10);
 	assign.SetMu0(vector<double>(13,1));
 	assign.SetObjDualNum(20);
 	assign.SetMuStepLength(0.000001);
-	assign.SetStopIterCon(10);
+	assign.SetStopIterCon(10,10);
 	cout<<"***********run*******************"<<endl;
 	assign.run();
 
