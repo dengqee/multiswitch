@@ -12,6 +12,7 @@
 #include<float.h>
 #include<cstdlib>
 #include<unistd.h>
+#include<fstream>
 using namespace std;
 /*{{{*/
 
@@ -99,6 +100,7 @@ void
 MeasureAssignmentProblem::UpdateLambda(double &lambda,const vector<double>&mu_star,const vector<uint32_t>&load)
 {
 	double sum=0;
+#if LAMBDA_LOG
 	cout<<"mu=";
 	for(auto it=mu_star.begin();it!=mu_star.end();it++)
 	{
@@ -106,10 +108,13 @@ MeasureAssignmentProblem::UpdateLambda(double &lambda,const vector<double>&mu_st
 		cout<<" "<<*it;
 	}
 	cout<<endl;
-	if(IsFeasible())
+#endif
+	if(lambda>m_maxLoad)
 	{
-		lambda=*max_element(load.begin(),load.end());
-		lambda=lambda-m_thetaLambda;
+		lambda=m_maxLoad;
+		m_x=*m_x_tmp;
+		m_lambda=lambda;
+		m_load=m_load_tmp;
 
 	}
 	else
@@ -162,6 +167,9 @@ MeasureAssignmentProblem::IsStopMu()
 {
 	if(m_objValDual.size()<m_objValDualNum)//iterate m_objValNum times at least
 		return false;
+	
+	if(m_maxLoad<m_lambda_tmp)
+		return true;
 
 	double sum=0;
 	for(auto it=m_objValDual.begin();it!=m_objValDual.end();it++)
@@ -199,6 +207,7 @@ MeasureAssignmentProblem::CalObjValDual(const double &lambda,const vector<double
 		
 		sum+=mu[v]*(tmpsum-lambda);
 	}
+	m_maxLoad=*max_element(m_load_tmp.begin(),m_load_tmp.end());
 	ret=lambda+sum;
 	return ret;
 }
@@ -222,7 +231,6 @@ MeasureAssignmentProblem::run()
 			cout<<"max load="<<CalMaxLoad(*m_x_tmp)<<endl;
 			cout<<"objDual="<<*(m_objValDual.rbegin())<<endl;
 		}
-		cout<<"*************************************************************"<<endl;
 		cout<<"lambda iterate time: "<<k<<endl;
 		cout<<"Lambda= "<<m_lambda_tmp<<endl;
 		cout<<"objVal= "<<objVal<<endl;
@@ -233,6 +241,7 @@ MeasureAssignmentProblem::run()
 		cout<<endl;
 		
 #endif
+		m_objValDual.clear();
 		m_mu_tmp=m_mu0;
 		l=0;
 		while(1)
@@ -253,6 +262,12 @@ MeasureAssignmentProblem::run()
 
 			if(IsStopMu())
 			{
+				/*if(k==0&&m_lambda_tmp<m_maxLoad)
+				{
+					m_lambda_tmp=m_maxLoad;
+					
+				}
+				*/
 				UpdateLambda(m_lambda_tmp,m_mu_tmp,m_load_tmp);
 				break;
 			}
@@ -347,9 +362,9 @@ MeasureAssignmentProblem::SolveSubProblem(uint32_t n)
 		{
 			if(node==m_measureNodes[v])
 			{
-				if(obj>m_mu_tmp[v]*flow->m_weight)
+				if(obj>=m_mu_tmp[v])
 				{
-					obj=m_mu_tmp[v]*flow->m_weight;	
+					obj=m_mu_tmp[v];	
 					xi=vector<uint32_t>(m_measureNodes.size(),0);
 					xi[v]=1;
 					
@@ -374,6 +389,11 @@ MeasureAssignmentProblem::SolveSubProblem(uint32_t n)
 void 
 MeasureAssignmentProblem::Print()
 {
+	cout<<"lambda= "<<m_lambda<<endl;
+	cout<<"load: ";
+	for(auto it=m_load.begin();it!=m_load.end();it++)
+		cout<<*it<<" ";
+	cout<<endl;
 
 }
 
@@ -416,4 +436,18 @@ MeasureAssignmentProblem::CalMaxLoad(vector<vector<uint32_t> >&x)
 	}
 	return lambda;
 
+}
+
+void 
+MeasureAssignmentProblem::OutPut(const string&filename)
+{
+	ofstream ofs(filename.c_str());
+	for(size_t i=0;i<m_x.size();i++)
+	{
+
+		for(size_t j=0;j<m_x[i].size();j++)
+			ofs<<m_x[i][j]<<" ";
+		ofs<<endl;
+	}
+	ofs.close();
 }

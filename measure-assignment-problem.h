@@ -24,7 +24,11 @@ struct thread_arg{
 class MeasureAssignmentProblem: public ProblemBase
 {
 private:
-	vector<vector<uint32_t> > m_x;//solve
+	/***********final result**********/
+	vector<vector<uint32_t> > m_x;
+	double m_lambda;
+	vector<uint32_t>m_load;
+	/********************************/
 	vector<uint32_t>m_measureNodes;
 
 	double m_lambda0;//initial lambda
@@ -45,6 +49,7 @@ private:
 	vector<double> m_mu_tmp;
 	vector<vector<uint32_t> > *m_x_tmp;
 	vector<uint32_t>m_load_tmp;
+	uint32_t m_maxLoad;
 	//uint32_t** m_x_tmp;
 //	thread_arg *m_arg;
 	pthread_mutex_t mutex;
@@ -101,6 +106,8 @@ public:
 	bool IsFeasible();
 	
 	uint32_t CalMaxLoad(vector<vector<uint32_t> >&x);
+
+	void OutPut(const string &filename);//output result
 
 
 };

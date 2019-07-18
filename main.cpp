@@ -23,23 +23,32 @@ int main()
 
 	string pathFileName=dir+topoName+"Path.txt";
 
+
 	shared_ptr<Network> geant(new Network(topoFileName,flowFileName));
 	geant->GenFlowPath();
 
-	PlasementProblem plasementProblem(geant,13);
+	uint32_t measureNodeNum=23;
+
+	PlasementProblem plasementProblem(geant,measureNodeNum);
 	plasementProblem.run();
 	plasementProblem.Print();
 
+	string assignFileName=dir+"assignment_"+topoName+"_"+to_string(measureNodeNum)+"_x.txt";
 	MeasureAssignmentProblem assign(geant);
-	assign.SetLambda0(5000);
-	assign.SetObjNum(20);
-	assign.SetLambdaStepLength(10);
-	assign.SetMu0(vector<double>(13,1));
+	assign.SetLambda0(2928);
+	assign.SetObjNum(10);
+	assign.SetLambdaStepLength(1);
+	assign.SetMu0(vector<double>(measureNodeNum,10));
 	assign.SetObjDualNum(20);
 	assign.SetMuStepLength(0.000001);
-	assign.SetStopIterCon(10,10);
+	assign.SetStopIterCon(5,5);
 	cout<<"***********run*******************"<<endl;
+	cout<<"rum..."<<endl;
 	assign.run();
+	cout<<"********result*******************"<<endl;
+	assign.Print();
+	assign.OutPut(assignFileName);
+
 
 
 
