@@ -14,7 +14,7 @@ using namespace std;
 
 #define THREAD_LOG 0//print thread log
 #define LAMBDA_LOG 1
-#define MU_LOG 0
+#define MU_LOG 1
 
 class MeasureAssignmentProblem;
 struct thread_arg{

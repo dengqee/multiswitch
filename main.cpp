@@ -31,7 +31,7 @@ int main()
 	plasementProblem.Print();
 
 	MeasureAssignmentProblem assign(geant);
-	assign.SetLambda0(3000);
+	assign.SetLambda0(2550);
 	assign.SetObjNum(20);
 	assign.SetLambdaStepLength(100);
 	assign.SetMu0(vector<double>(13,1));

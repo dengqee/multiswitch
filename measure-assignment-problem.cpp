@@ -235,9 +235,18 @@ MeasureAssignmentProblem::run()
 
 			double objDualVal=CalObjValDual(m_lambda_tmp,m_mu_tmp,*m_x_tmp);
 #if MU_LOG
+			cout<<endl;
 			cout<<"    mu iterate time: "<<l<<endl;
 
 			cout<<"    objDual="<<objDualVal<<endl;
+			cout<<"    mu=";
+			for(auto it=m_mu_tmp.begin();it!=m_mu_tmp.end();it++)
+				cout<<*it<<" ";
+			cout<<endl;
+			cout<<"    load: ";
+			for(auto it=m_load_tmp.begin();it!=m_load_tmp.end();it++)
+				cout<<*it<<" ";
+			cout<<endl;
 #endif
 
 			if(m_objValDual.size()>=m_objValDualNum)
