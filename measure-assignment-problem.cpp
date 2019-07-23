@@ -13,6 +13,7 @@
 #include<cstdlib>
 #include<unistd.h>
 #include<fstream>
+#include<cmath>
 using namespace std;
 /*{{{*/
 
@@ -165,11 +166,11 @@ MeasureAssignmentProblem::IsStopLambda()
 bool 
 MeasureAssignmentProblem::IsStopMu()
 {
+	if(m_maxLoad<m_lambda_tmp)
+		return true;
 	if(m_objValDual.size()<m_objValDualNum)//iterate m_objValNum times at least
 		return false;
 	
-	if(m_maxLoad<m_lambda_tmp)
-		return true;
 
 	double sum=0;
 	for(auto it=m_objValDual.begin();it!=m_objValDual.end();it++)
@@ -273,6 +274,7 @@ MeasureAssignmentProblem::run()
 			}
 			UpdateMu(m_mu_tmp,m_lambda_tmp,*m_x_tmp);
 			l++;
+			m_thetaMu=0.00001/sqrt(l);
 		}
 
 
@@ -442,7 +444,13 @@ void
 MeasureAssignmentProblem::OutPut(const string&filename)
 {
 	ofstream ofs(filename.c_str());
-	for(size_t i=0;i<m_x.size();i++)
+	for(auto n:m_measureNodes)//node
+		ofs<<n<<" ";
+	ofs<<endl;
+	for(auto l:m_load)//load
+		ofs<<l<<" ";
+	ofs<<endl;
+	for(size_t i=0;i<m_x.size();i++)//x
 	{
 
 		for(size_t j=0;j<m_x[i].size();j++)
