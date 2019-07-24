@@ -25,7 +25,7 @@ def max_flow(nodes, paths, value):
                     topo[bi_path[j + 1]][bi_path[j]] = 1 + topo[bi_path[j + 1]][bi_path[j]]
         if len(bi_paths) == len(paths):
             flag = 1
-    flows = [[] for i in range(nodes)]
+    flows = [[] for i in nodes]
     for i in range(1,len(paths)+1):
         for key,value in topo[i].items():
             if value==0:
@@ -34,7 +34,7 @@ def max_flow(nodes, paths, value):
 
 
 def make_bigraph_topo(nodes, paths, value):
-    nodenum = nodes + len(paths) + 2
+    nodenum = len(nodes) + len(paths) + 2
     linkdict={}
     for i in range(nodenum):
         linkdict[i]={}

@@ -9,6 +9,7 @@
 #include"plasement-problem.h"
 #include<algorithm>
 #include<iterator>
+#include<fstream>
 using namespace std;
 
 PlasementProblem::PlasementProblem()
@@ -141,4 +142,13 @@ PlasementProblem::Print()
 	cout<<endl;
 }
 
+void 
+PlasementProblem::OutPut(const string&fileName)
+{
+	ofstream ofs(fileName.c_str());
+	for(auto n:m_measureNodes)
+		ofs<<n<<" ";
+	
+	ofs.close();
+}
 

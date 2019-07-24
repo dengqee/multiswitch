@@ -170,3 +170,20 @@ Network::Print()
 	cout<<"the number of fin flows: "<<m_fineFlowNum<<endl;
 
 }
+
+void 
+Network::OutPut(const string &fileName)
+{
+	ofstream ofs(fileName.c_str());
+	for(auto flow:m_flows)
+	{
+		for(uint32_t i=0;i<flow->m_weight;i++)
+		{
+			for(auto n:flow->m_nodePaths[0])
+				ofs<<n<<" ";
+			ofs<<endl;
+		}
+
+	}
+	ofs.close();
+}

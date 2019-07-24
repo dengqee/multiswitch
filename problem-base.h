@@ -33,5 +33,7 @@ public:
 
 	virtual void Print()=0;
 
+	virtual void OutPut(const string &) = 0;
+
 };
 #endif /* PROBLEM_BASE_H */

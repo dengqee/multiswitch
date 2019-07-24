@@ -40,6 +40,8 @@ public:
 
 	virtual void Print();
 
+	virtual void OutPut(const string &fileName);//output measurNodes to file
+
 
 };
 

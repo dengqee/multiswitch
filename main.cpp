@@ -23,10 +23,11 @@ int main(int argc,char*argv[])
 	string flowFileName=dir+topoName+"flow.txt"; 
 
 	string pathFileName=dir+topoName+"Path.txt";
-
+	string flowPathFile=dir+topoName+"_FlowPath.txt";
 
 	shared_ptr<Network> geant(new Network(topoFileName,flowFileName));
 	geant->GenFlowPath();
+	geant->OutPut(flowPathFile);
 
 	uint32_t measureNodeNum;
 	
@@ -35,9 +36,11 @@ int main(int argc,char*argv[])
 	else 
 		measureNodeNum=16;
 
+	string plaseFile=dir+topoName+"_MeasureNodes.txt";
 	PlasementProblem plasementProblem(geant,measureNodeNum);
 	plasementProblem.run();
 	plasementProblem.Print();
+	plasementProblem.OutPut(plaseFile);
 
 	string assignFileName=dir+"assignment_"+topoName+"_"+to_string(measureNodeNum)+"_x.txt";
 	MeasureAssignmentProblem assign(geant);

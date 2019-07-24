@@ -69,6 +69,8 @@ public:
 
 	void Print();//print infomation of network
 
+	void OutPut(const string &fileName);//output fine flow path to file 
+
 };
 
 #endif /* NETWORK_H */

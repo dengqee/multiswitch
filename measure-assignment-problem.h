@@ -107,7 +107,7 @@ public:
 	
 	uint32_t CalMaxLoad(vector<vector<uint32_t> >&x);
 
-	void OutPut(const string &filename);//output result
+	virtual void OutPut(const string &filename);//output result
 
 
 };
