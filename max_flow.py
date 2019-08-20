@@ -1,3 +1,5 @@
+from random import randint
+from math import floor
 def max_flow(nodes, paths, value):
     topo = make_bigraph_topo(nodes, paths, value)
     flag = 0
@@ -44,7 +46,7 @@ def make_bigraph_topo(nodes, paths, value):
         for j in path:
             linkdict[i+1][j + len(paths) + 1]=1
     for i in nodes:
-        linkdict[i + len(paths) + 1][len(paths)+nodes+1]=value
+        linkdict[i + len(paths) + 1][len(paths)+len(nodes)+1]=value
     return linkdict
 
 
@@ -59,3 +61,22 @@ def dfs(topo, s, flag, path=[]):
             if len(p)!=0:
                 return  p
     return ([])
+
+
+if __name__ == "__main__":
+    dir="./data/"
+    topo="Geant"
+    pathsfile=dir+topo+"_FlowPath.txt"
+    paths=[]
+    path=[]
+    with open(pathsfile,"r") as f:
+        for line in f.readlines():
+            path=[int(x) for x in line.split()]
+            paths.append(path)
+    measureflie=dir+topo+"_MeasureNodes.txt"
+    nodes=[]
+    with open(measureflie,"r") as f:
+        for line in f.readlines():
+            nodes=[int(x) for x in line.split()]
+    flows,itte=max_flow(nodes,paths,floor(len(paths)/len(nodes))+1)
+    print(itte)
