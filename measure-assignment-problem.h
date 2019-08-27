@@ -16,25 +16,94 @@ using namespace std;
 #define LAMBDA_LOG 1
 #define MU_LOG 0
 
+#define RAND_SEED 1 //随机种子
+class PiecewiseFunc
+{
+private:
+	vector<double>m_piece;//分段区间
+	vector<double>m_slop;//斜率
+	double m_start;//初值
+	vector<double>m_bias;//y=m_slop*x+m_bias
+public:
+	PiecewiseFunc(vector<double>&piece,vector<double>&slop,double start):
+		m_piece(piece),
+		m_slop(slop),
+		m_start(start),
+		m_bias(vector<double>())
+	{
+		double y=m_start;
+		double bia;
+		size_t i;
+		for(i=0;i<m_piece.size()-1;i++)
+		{
+			bia=y-m_slop[i]*m_piece[i];
+			m_bias.push_back(bia);
+			y=m_slop[i]*m_piece[i+1]+m_bias[i];
+		}
+		bia=y-m_slop[i]*m_piece[i];
+		m_bias.push_back(bia);
+
+
+
+	}
+	double Result(double x)
+	{
+		if(x<0)
+			return 0;
+		size_t i;
+		for(i=1;i<m_piece.size();i++)
+		{
+			if(x<=m_piece[i])
+			{
+				return m_slop[i-1]*x+m_bias[i-1];
+			}
+
+		}
+		return m_slop[i-1]*x+m_bias[i-1];
+	}
+	double GetSlop(double x)
+	{
+		if(x<0)
+			return 0;
+		size_t i;
+		for(i=1;i<m_piece.size();i++)
+		{
+			if(x<=m_piece[i])
+			{
+				return m_slop[i-1];
+			}
+
+		}
+		return m_slop[i-1];
+
+	}
+
+};
+
 class MeasureAssignmentProblem;
+
 struct thread_arg{
 	MeasureAssignmentProblem* ptr;
 	uint32_t n;
 };
+
 class MeasureAssignmentProblem: public ProblemBase
 {
 private:
 	/***********final result**********/
 	vector<vector<uint32_t> > m_x;
-	double m_lambda;
+	vector<double> m_lambda;//diff to dev,dev2
 	vector<uint32_t>m_load;
 	/********************************/
 	vector<uint32_t>m_measureNodes;
+	vector<uint32_t>m_nodeCap;//capacity of measureNodes;
 
-	double m_lambda0;//initial lambda
+	vector<double> m_lambda0;//initial lambda
 	vector<double> m_objVal;//recode multi objval value on every iterate
 	uint32_t m_objValNum;//the size of m_objVal
 	double m_thetaLambda;//step length of lambda
+
+	shared_ptr<PiecewiseFunc>m_costFun;//代价函数
 	
 	vector<double> m_mu0;//initial mu
 	vector<double> m_objValDual;//recode multi m_objValDual value on every iterate
@@ -45,7 +114,7 @@ private:
 	double m_mu_err;
 
 	//middle value
-	double m_lambda_tmp;
+	vector<double> m_lambda_tmp;
 	vector<double> m_mu_tmp;
 	vector<vector<uint32_t> > *m_x_tmp;
 	vector<uint32_t>m_load_tmp;
@@ -55,14 +124,20 @@ private:
 	pthread_mutex_t mutex;
 	uint32_t thread_cnt;
 
+	double CostFun(double lambdav);//the cost function of lambdav
+
+	double CostFunDer(double lambdav);//代价函数的导数
+
 public:
 	MeasureAssignmentProblem();
 
-	MeasureAssignmentProblem(shared_ptr<Network>);
+	MeasureAssignmentProblem(shared_ptr<Network>,shared_ptr<PiecewiseFunc>costFun);
 
 	virtual ~MeasureAssignmentProblem();
-	
-	void SetLambda0(double lambda0);
+
+	void SetNodeCapacity(uint32_t n);//set m_nodeCap=random,m_nodeCap<n
+
+	void SetLambda0(vector<double> lambda0);
 
 	void SetObjNum(uint32_t n);//set m_objValNum
 
@@ -80,21 +155,21 @@ public:
 
 	virtual shared_ptr<Network> GetNetwork();
 
-	void UpdateLambda(double &lambda,const vector<double>&mu_star,const vector<uint32_t>&load);
+	void UpdateLambda(vector<double> &lambda,const vector<double>&mu_star,const vector<uint32_t>&load);
 
-	void UpdateMu(vector<double>&Mu,const double &lambda,const vector<vector<uint32_t> > &x);
+	void UpdateMu(vector<double>&Mu,const vector<double> &lambda,const vector<vector<uint32_t> > &x);
 
 	bool IsStopLambda();
 
 	bool IsStopMu();
 
-	double CalObjVal(const double &lambda);
+	double CalObjVal(const vector<double> &lambda);
 
-	double CalObjValDual(const double &lambda,const vector<double> &mu,const vector<vector<uint32_t> > &x);
+	double CalObjValDual(const vector<double> &lambda,const vector<double> &mu,const vector<vector<uint32_t> > &x);
 
 	virtual void run();
 
-	void SolveDualProblem(const double &lambda,const vector<double> &mu);//solve dual problem
+	void SolveDualProblem(const vector<double> &lambda,const vector<double> &mu);//solve dual problem
 
 	void SolveSubProblem(uint32_t n);//multi-thread,n th thread
 

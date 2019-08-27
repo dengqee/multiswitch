@@ -16,20 +16,35 @@
 using namespace std;
 /*{{{*/
 
+double 
+MeasureAssignmentProblem::CostFun(double lambdav)
+{
+	return m_costFun->Result(lambdav);
+}
+
+double 
+MeasureAssignmentProblem::CostFunDer(double lambdav)
+{
+	return m_costFun->GetSlop(lambdav);
+}
+
 
 MeasureAssignmentProblem::MeasureAssignmentProblem()
 {
 }
 
-MeasureAssignmentProblem::MeasureAssignmentProblem(shared_ptr<Network> network):
+MeasureAssignmentProblem::MeasureAssignmentProblem(shared_ptr<Network> network,shared_ptr<PiecewiseFunc>costFun):
 	ProblemBase(network),
 //	m_arg(new thread_arg),
+	m_costFun(costFun),
 	m_x_tmp(new vector<vector<uint32_t> > ())
+
 {
 	//set to vector
 	for(auto it=network->m_measureNodes.begin();it!=network->m_measureNodes.end();it++)
 		m_measureNodes.push_back(*it);
 	m_load_tmp=vector<uint32_t>(m_measureNodes.size(),0);
+	SetNodeCapacity(network->m_fineFlowNum);
 
 }
 
@@ -40,8 +55,18 @@ MeasureAssignmentProblem::~MeasureAssignmentProblem()
 
 }
 
+void 
+MeasureAssignmentProblem::SetNodeCapacity(uint32_t n)
+{
+	srand(RAND_SEED);
+	for(int i=0;i<m_measureNodes.size();i++)
+	{
+		m_nodeCap.push_back(rand()%n);
+	}
+}
+
 void
-MeasureAssignmentProblem::SetLambda0(double lambda0)
+MeasureAssignmentProblem::SetLambda0(vector<double> lambda0)
 {
 	m_lambda0=lambda0;
 }
@@ -97,10 +122,10 @@ MeasureAssignmentProblem::GetNetwork()
 /*}}}*/
 
 void
-MeasureAssignmentProblem::UpdateLambda(double &lambda,const vector<double>&mu_star,const vector<uint32_t>&load)
+MeasureAssignmentProblem::UpdateLambda(vector<double> &lambda,const vector<double>&mu_star,const vector<uint32_t>&load)
 {
-	double sum=0;
 #if LAMBDA_LOG
+	double sum=0;
 	cout<<"mu=";
 	for(auto it=mu_star.begin();it!=mu_star.end();it++)
 	{
@@ -109,20 +134,15 @@ MeasureAssignmentProblem::UpdateLambda(double &lambda,const vector<double>&mu_st
 	}
 	cout<<endl;
 #endif
-	if(lambda>m_maxLoad)
+	for(size_t v=0;v<lambda.size();v++)
 	{
-		lambda=m_maxLoad;
-		m_x=*m_x_tmp;
-		m_lambda=lambda;
-		m_load=m_load_tmp;
-
+		lambda[v]=lambda[v]-m_thetaLambda*CostFunDer(lambda[v])+m_thetaLambda*mu_star[v]*m_nodeCap[v];
+		lambda[v]=lambda[v]>0?lambda[v]:0;
 	}
-	else
-		lambda=lambda+m_thetaLambda;
 }
 
 void 
-MeasureAssignmentProblem::UpdateMu(vector<double> &mu,const double &lambda,const vector<vector<uint32_t> >&x_star)
+MeasureAssignmentProblem::UpdateMu(vector<double> &mu,const vector<double> &lambda,const vector<vector<uint32_t> >&x_star)
 {
 	for(size_t v=0;v<mu.size();v++)
 	{
@@ -131,7 +151,7 @@ MeasureAssignmentProblem::UpdateMu(vector<double> &mu,const double &lambda,const
 		{
 			sum+=m_network->m_flows[i]->m_weight*x_star[i][v];
 		}
-		sum-=lambda;
+		sum-=m_nodeCap[v]*lambda[v];
 		//sum-=*max_element(m_load_tmp.begin(),m_load_tmp.end());
 		mu[v]+=m_thetaMu*sum;
 		if(mu[v]<0)
@@ -168,8 +188,8 @@ MeasureAssignmentProblem::IsStopMu()
 	if(m_objValDual.size()<m_objValDualNum)//iterate m_objValNum times at least
 		return false;
 	
-	if(m_maxLoad<m_lambda_tmp)
-		return true;
+//	if(m_maxLoad<m_lambda_tmp)
+//		return true;
 
 	double sum=0;
 	for(auto it=m_objValDual.begin();it!=m_objValDual.end();it++)
@@ -186,13 +206,18 @@ MeasureAssignmentProblem::IsStopMu()
 }
 
 double 
-MeasureAssignmentProblem::CalObjVal(const double &lambda)
+MeasureAssignmentProblem::CalObjVal(const vector<double> &lambda)
 {
-	return lambda;
+	double ret=0;
+	for(size_t i=0;i<lambda.size();i++)
+	{
+		ret+=CostFun(lambda[i]);
+	}
+	return ret;
 }
 
 double 
-MeasureAssignmentProblem::CalObjValDual(const double &lambda,const vector<double> &mu,const vector<vector<uint32_t> > &x)
+MeasureAssignmentProblem::CalObjValDual(const vector<double> &lambda,const vector<double> &mu,const vector<vector<uint32_t> > &x)
 {
 	double ret;
 	double sum=0;
@@ -205,10 +230,10 @@ MeasureAssignmentProblem::CalObjValDual(const double &lambda,const vector<double
 		}
 		m_load_tmp[v]=tmpsum;
 		
-		sum+=mu[v]*(tmpsum-lambda);
+		sum+=mu[v]*(tmpsum-m_nodeCap[v]*lambda[v]);
 	}
 	m_maxLoad=*max_element(m_load_tmp.begin(),m_load_tmp.end());
-	ret=lambda+sum;
+	ret=CalObjVal(lambda)+sum;
 	return ret;
 }
 
@@ -225,14 +250,17 @@ MeasureAssignmentProblem::run()
 	{
 		double objVal=CalObjVal(m_lambda_tmp);
 #if LAMBDA_LOG 
+		cout<<endl<<"lambda iterate time: "<<k<<endl;
 		if(k>1)
 		{
 			IsFeasible();
 			cout<<"max load="<<CalMaxLoad(*m_x_tmp)<<endl;
 			cout<<"objDual="<<*(m_objValDual.rbegin())<<endl;
 		}
-		cout<<"lambda iterate time: "<<k<<endl;
-		cout<<"Lambda= "<<m_lambda_tmp<<endl;
+		cout<<"Lambda: ";
+		for(auto i:m_lambda_tmp)
+		cout<<i<<" ";
+		cout<<endl;
 		cout<<"objVal= "<<objVal<<endl;
 
 		cout<<"load:";
@@ -273,6 +301,7 @@ MeasureAssignmentProblem::run()
 			}
 			UpdateMu(m_mu_tmp,m_lambda_tmp,*m_x_tmp);
 			l++;
+			m_thetaMu=0.0001/sqrt(l);
 		}
 
 
@@ -283,12 +312,13 @@ MeasureAssignmentProblem::run()
 		if(IsStopLambda())
 			break;
 		k++;
+		m_thetaLambda=0.1/sqrt(k);
 	}
 }
 
 
 void 
-MeasureAssignmentProblem::SolveDualProblem(const double &lambda,const vector<double> &mu)
+MeasureAssignmentProblem::SolveDualProblem(const vector<double> &lambda,const vector<double> &mu)
 {
 	m_x_tmp->clear();
 	m_x_tmp->resize(m_network->m_coarseFlowNum,vector<uint32_t>());
@@ -389,7 +419,10 @@ MeasureAssignmentProblem::SolveSubProblem(uint32_t n)
 void 
 MeasureAssignmentProblem::Print()
 {
-	cout<<"lambda= "<<m_lambda<<endl;
+	cout<<"lambda: "<<endl;
+	for(auto i:m_lambda)
+		cout<<i<<" ";
+	cout<<endl;
 	cout<<"load: ";
 	for(auto it=m_load.begin();it!=m_load.end();it++)
 		cout<<*it<<" ";
@@ -407,7 +440,7 @@ MeasureAssignmentProblem::IsFeasible()
 		{
 			sum+=m_network->m_flows[i]->m_weight*(*m_x_tmp)[i][v];
 		}
-		if(sum>m_lambda_tmp)
+		if(sum>m_nodeCap[v])
 		{
 			cout<<"unfeasible!"<<endl;
 			return false;
