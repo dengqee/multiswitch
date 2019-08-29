@@ -37,6 +37,8 @@ MeasureAssignmentProblem::MeasureAssignmentProblem(shared_ptr<Network> network,s
 	ProblemBase(network),
 //	m_arg(new thread_arg),
 	m_costFun(costFun),
+	m_A(costFun->GetA()),
+	m_B(costFun->GetB()),
 	m_x_tmp(new vector<vector<uint32_t> > ())
 
 {
@@ -84,7 +86,7 @@ MeasureAssignmentProblem::SetLambdaStepLength(double length)
 }
 
 void
-MeasureAssignmentProblem::SetMu0(vector<double> mu0)
+MeasureAssignmentProblem::SetMu0(vector<vector<double> >mu0)
 {
 	m_mu0=mu0;
 }
@@ -99,6 +101,7 @@ void
 MeasureAssignmentProblem::SetMuStepLength(double length)
 {
 	m_thetaMu=length;
+	m_thetaMu0=length;
 }
 
 void
@@ -122,42 +125,52 @@ MeasureAssignmentProblem::GetNetwork()
 /*}}}*/
 
 void
-MeasureAssignmentProblem::UpdateLambda(vector<double> &lambda,const vector<double>&mu_star,const vector<uint32_t>&load)
+MeasureAssignmentProblem::UpdateLambda(vector<double> &lambda,const vector<vector<double> >&mu_star,const vector<uint32_t>&load)
 {
 #if LAMBDA_LOG
 	double sum=0;
-	cout<<"mu=";
-	for(auto it=mu_star.begin();it!=mu_star.end();it++)
+	cout<<"mu="<<endl;
+	for(size_t i=0;i<mu_star.size();i++ )
 	{
-		sum+=*it;
-		cout<<" "<<*it;
+		for(auto it=mu_star[i].begin();it!=mu_star[i].end();it++)
+		{
+			sum+=*it;
+			cout<<" "<<*it;
+		}
+		cout<<endl;
+
 	}
-	cout<<endl;
 #endif
 	for(size_t v=0;v<lambda.size();v++)
 	{
-		lambda[v]=lambda[v]-m_thetaLambda*CostFunDer(lambda[v])+m_thetaLambda*mu_star[v]*m_nodeCap[v];
+		double sum=0;
+		for(size_t m=0;m<mu_star.size();m++)
+		{
+			sum+=mu_star[m][v];
+
+		}
+		lambda[v]=lambda[v]-m_thetaLambda*(1-sum);
 		lambda[v]=lambda[v]>0?lambda[v]:0;
 	}
 }
 
 void 
-MeasureAssignmentProblem::UpdateMu(vector<double> &mu,const vector<double> &lambda,const vector<vector<uint32_t> >&x_star)
+MeasureAssignmentProblem::UpdateMu(vector<vector<double> > &mu,const vector<double> &lambda,const vector<vector<uint32_t> >&x_star)
 {
-	for(size_t v=0;v<mu.size();v++)
-	{
-		double sum=0;
-		for(size_t i=0;i<m_network->m_coarseFlowNum;i++)
+	for(size_t m=0;m<mu.size();m++)
+		for(size_t v=0;v<mu[m].size();v++)
 		{
-			sum+=m_network->m_flows[i]->m_weight*x_star[i][v];
-		}
-		sum-=m_nodeCap[v]*lambda[v];
-		//sum-=*max_element(m_load_tmp.begin(),m_load_tmp.end());
-		mu[v]+=m_thetaMu*sum;
-		if(mu[v]<0)
-			mu[v]=0;
+			double sum=0;
+			for(size_t i=0;i<m_network->m_coarseFlowNum;i++)
+			{
+				sum+=m_network->m_flows[i]->m_weight*x_star[i][v]*m_A[m];
+			}
+			//sum-=*max_element(m_load_tmp.begin(),m_load_tmp.end());
+			mu[m][v]+=m_thetaMu*(sum+m_B[m]*m_nodeCap[v]-lambda[v]);//这里是+B[m]
+			if(mu[m][v]<0)
+				mu[m][v]=0;
 
-	}
+		}
 	
 }
 
@@ -211,26 +224,30 @@ MeasureAssignmentProblem::CalObjVal(const vector<double> &lambda)
 	double ret=0;
 	for(size_t i=0;i<lambda.size();i++)
 	{
-		ret+=CostFun(lambda[i]);
+		ret+=lambda[i];
 	}
 	return ret;
 }
 
 double 
-MeasureAssignmentProblem::CalObjValDual(const vector<double> &lambda,const vector<double> &mu,const vector<vector<uint32_t> > &x)
+MeasureAssignmentProblem::CalObjValDual(const vector<double> &lambda,const vector<vector<double> > &mu,const vector<vector<uint32_t> > &x)
 {
 	double ret;
 	double sum=0;
-	for(size_t v=0;v<mu.size();v++)
+	for(size_t m=0;m<mu.size();m++)
 	{
-		uint32_t tmpsum=0;
-		for(size_t i=0;i<m_network->m_coarseFlowNum;i++)
+		for(size_t v=0;v<mu[m].size();v++)
 		{
-			tmpsum+=m_network->m_flows[i]->m_weight*x[i][v];
+			uint32_t tmpsum=0;
+			for(size_t i=0;i<m_network->m_coarseFlowNum;i++)
+			{
+				tmpsum+=m_network->m_flows[i]->m_weight*x[i][v];
+			}
+			m_load_tmp[v]=tmpsum;
+			
+			sum+=mu[m][v]*(m_A[m]*tmpsum+m_nodeCap[v]*m_B[m]-lambda[v]);
 		}
-		m_load_tmp[v]=tmpsum;
-		
-		sum+=mu[v]*(tmpsum-m_nodeCap[v]*lambda[v]);
+
 	}
 	m_maxLoad=*max_element(m_load_tmp.begin(),m_load_tmp.end());
 	ret=CalObjVal(lambda)+sum;
@@ -301,7 +318,8 @@ MeasureAssignmentProblem::run()
 			}
 			UpdateMu(m_mu_tmp,m_lambda_tmp,*m_x_tmp);
 			l++;
-			m_thetaMu=0.0001/sqrt(l);
+			//if(l>2000)
+				m_thetaMu=m_thetaMu0/sqrt(l);
 		}
 
 
@@ -312,13 +330,13 @@ MeasureAssignmentProblem::run()
 		if(IsStopLambda())
 			break;
 		k++;
-		m_thetaLambda=0.1/sqrt(k);
+		//m_thetaLambda=0.1/sqrt(k);
 	}
 }
 
 
 void 
-MeasureAssignmentProblem::SolveDualProblem(const vector<double> &lambda,const vector<double> &mu)
+MeasureAssignmentProblem::SolveDualProblem(const vector<double> &lambda,const vector<vector<double> > &mu)
 {
 	m_x_tmp->clear();
 	m_x_tmp->resize(m_network->m_coarseFlowNum,vector<uint32_t>());
@@ -392,9 +410,12 @@ MeasureAssignmentProblem::SolveSubProblem(uint32_t n)
 		{
 			if(node==m_measureNodes[v])
 			{
-				if(obj>=m_mu_tmp[v])
+				double objtmp=0;
+				for(size_t m=0;m<m_mu_tmp.size();m++)
+					objtmp+=m_mu_tmp[m][v]*m_A[m];
+				if(obj>=objtmp)
 				{
-					obj=m_mu_tmp[v];	
+					obj=objtmp;	
 					xi=vector<uint32_t>(m_measureNodes.size(),0);
 					xi[v]=1;
 					

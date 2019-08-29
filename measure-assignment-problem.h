@@ -14,7 +14,7 @@ using namespace std;
 
 #define THREAD_LOG 0//print thread log
 #define LAMBDA_LOG 1
-#define MU_LOG 0
+#define MU_LOG 1
 
 #define RAND_SEED 1 //随机种子
 class PiecewiseFunc
@@ -78,6 +78,15 @@ public:
 
 	}
 
+	vector<double> GetA()//获得系数矩阵A
+	{
+		return m_slop;
+	}
+	vector<double> GetB()//获得系数矩阵B
+	{
+		return m_bias;
+	}
+
 };
 
 class MeasureAssignmentProblem;
@@ -104,18 +113,21 @@ private:
 	double m_thetaLambda;//step length of lambda
 
 	shared_ptr<PiecewiseFunc>m_costFun;//代价函数
+	vector<double>m_A;//系数矩阵A
+	vector<double>m_B;//系数矩阵B
 	
-	vector<double> m_mu0;//initial mu
+	vector<vector<double> > m_mu0;//initial mu
 	vector<double> m_objValDual;//recode multi m_objValDual value on every iterate
 	uint32_t m_objValDualNum;//the number of m_objValDual
 	double m_thetaMu;//step length of mu
+	double m_thetaMu0;//initial step length of mu
 
 	double m_lambda_err;//stop iterate condition
 	double m_mu_err;
 
 	//middle value
 	vector<double> m_lambda_tmp;
-	vector<double> m_mu_tmp;
+	vector<vector<double> >m_mu_tmp;
 	vector<vector<uint32_t> > *m_x_tmp;
 	vector<uint32_t>m_load_tmp;
 	uint32_t m_maxLoad;
@@ -143,7 +155,7 @@ public:
 
 	void SetLambdaStepLength(double length);//set m_thetaLambda
 
-	void SetMu0(vector<double> mu0);
+	void SetMu0(vector<vector<double> >mu0);
 
 	void SetObjDualNum(uint32_t n);//set m_objValDualNum
 
@@ -155,9 +167,9 @@ public:
 
 	virtual shared_ptr<Network> GetNetwork();
 
-	void UpdateLambda(vector<double> &lambda,const vector<double>&mu_star,const vector<uint32_t>&load);
+	void UpdateLambda(vector<double> &lambda,const vector<vector<double> >&mu_star,const vector<uint32_t>&load);
 
-	void UpdateMu(vector<double>&Mu,const vector<double> &lambda,const vector<vector<uint32_t> > &x);
+	void UpdateMu(vector<vector<double> >&Mu,const vector<double> &lambda,const vector<vector<uint32_t> > &x);
 
 	bool IsStopLambda();
 
@@ -165,11 +177,11 @@ public:
 
 	double CalObjVal(const vector<double> &lambda);
 
-	double CalObjValDual(const vector<double> &lambda,const vector<double> &mu,const vector<vector<uint32_t> > &x);
+	double CalObjValDual(const vector<double> &lambda,const vector<vector<double> >&mu,const vector<vector<uint32_t> > &x);
 
 	virtual void run();
 
-	void SolveDualProblem(const vector<double> &lambda,const vector<double> &mu);//solve dual problem
+	void SolveDualProblem(const vector<double> &lambda,const vector<vector<double> >&mu);//solve dual problem
 
 	void SolveSubProblem(uint32_t n);//multi-thread,n th thread
 

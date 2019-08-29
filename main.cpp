@@ -43,13 +43,13 @@ int main()
 	//求解任务分配问题
 	string assignFileName=dir+"assignment_"+topoName+"_"+to_string(measureNodeNum)+"_x.txt";
 	MeasureAssignmentProblem assign(geant,costFun);
-	assign.SetLambda0(vector<double>(measureNodeNum,1));
+	assign.SetLambda0(vector<double>(measureNodeNum,5000));
 	assign.SetObjNum(10);
 	assign.SetLambdaStepLength(0.1);
-	assign.SetMu0(vector<double>(measureNodeNum,10));
-	assign.SetObjDualNum(20);
+	assign.SetMu0(vector<vector<double> >(slop.size(),vector<double>(measureNodeNum,100)));
+	assign.SetObjDualNum(10);
 	assign.SetMuStepLength(0.0001);
-	assign.SetStopIterCon(5,5);
+	assign.SetStopIterCon(50,50);
 	cout<<"***********run*******************"<<endl;
 	cout<<"run..."<<endl;
 	assign.run();
