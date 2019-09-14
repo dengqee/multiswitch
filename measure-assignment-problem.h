@@ -9,6 +9,7 @@
 
 #include<iostream>
 #include"problem-base.h"
+#include<algorithm>
 
 using namespace std;
 
@@ -195,6 +196,8 @@ public:
 	uint32_t CalMaxLoad(vector<vector<uint32_t> >&x);
 
 	void OutPut(const string &filename);//output result
+
+	void OutPutCplexDat(const string &fileName);//输出Cplex的dat文件
 
 
 };

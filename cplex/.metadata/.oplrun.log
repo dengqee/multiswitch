@@ -1,0 +1,720 @@
+!SESSION 2019-08-29 15:48:52.535 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-29 15:48:52.536
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-29 15:53:14.996 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-29 15:53:14.997
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+
+!ENTRY ilog.odms.ide.opllang.remote 4 0 2019-08-29 15:53:15.075
+!MESSAGE run failed
+!STACK 0
+ilog.concert.IloException: 处理失败。
+	at ilog.opl.opl_lang_wrapJNI.IloOplModel_getModel(Native Method)
+	at ilog.opl.IloOplModel.getModel(IloOplModel.java:537)
+	at ilog.odms.ide.opllang.run.IloAbstractRunShell.loadModel(IloAbstractRunShell.java:1198)
+	at ilog.odms.ide.opllang.remote.IloOplRunConfigRunner.doProcessModel(IloOplRunConfigRunner.java:162)
+	at ilog.odms.ide.opllang.remote.IloOplRunConfigRunner.doRun(IloOplRunConfigRunner.java:398)
+	at ilog.odms.ide.opllang.run.IloAbstractRunShell$2.run(IloAbstractRunShell.java:1589)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+!SESSION 2019-08-29 15:55:16.754 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-29 15:55:16.755
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-29 16:09:32.123 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-29 16:09:32.124
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-29 16:11:14.819 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-29 16:11:14.820
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-29 16:11:45.814 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-29 16:11:45.815
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-29 16:12:11.109 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-29 16:12:11.110
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-29 16:12:31.516 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-29 16:12:31.517
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-29 16:14:39.888 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-29 16:14:39.889
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-29 16:15:21.287 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-29 16:15:21.288
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-29 16:19:03.354 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-29 16:19:03.354
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-29 16:19:20.748 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-29 16:19:20.749
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-29 16:19:36.040 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-29 16:19:36.040
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-29 16:20:21.163 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-29 16:20:21.164
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-29 16:27:35.482 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-29 16:27:35.483
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-29 16:27:59.017 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-29 16:27:59.018
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-29 16:28:27.468 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-29 16:28:27.469
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-29 16:31:46.014 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-29 16:31:46.015
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-29 16:48:06.723 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-29 16:48:06.723
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-29 16:54:18.278 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-29 16:54:18.279
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-29 16:59:27.874 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-29 16:59:27.875
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-29 17:04:31.814 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-29 17:04:31.815
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-29 17:05:05.161 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-29 17:05:05.162
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+
+!ENTRY ilog.odms.ide.opllang.remote 4 0 2019-08-29 17:05:05.232
+!MESSAGE run failed
+!STACK 0
+ilog.concert.IloException: 处理失败。
+	at ilog.opl.opl_lang_wrapJNI.IloOplModel_getModel(Native Method)
+	at ilog.opl.IloOplModel.getModel(IloOplModel.java:537)
+	at ilog.odms.ide.opllang.run.IloAbstractRunShell.loadModel(IloAbstractRunShell.java:1198)
+	at ilog.odms.ide.opllang.remote.IloOplRunConfigRunner.doProcessModel(IloOplRunConfigRunner.java:162)
+	at ilog.odms.ide.opllang.remote.IloOplRunConfigRunner.doRun(IloOplRunConfigRunner.java:398)
+	at ilog.odms.ide.opllang.run.IloAbstractRunShell$2.run(IloAbstractRunShell.java:1589)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+!SESSION 2019-08-29 17:05:15.940 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-29 17:05:15.941
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-29 17:05:32.356 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-29 17:05:32.357
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-31 22:47:43.814 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-31 22:47:43.815
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-31 22:48:13.629 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-31 22:48:13.630
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-31 22:48:59.053 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-31 22:48:59.054
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-31 22:49:55.951 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-31 22:49:55.952
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-31 14:55:01.192 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-31 14:55:01.195
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-31 14:55:41.429 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-31 14:55:41.430
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-31 14:57:31.956 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-31 14:57:31.957
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-31 14:58:40.856 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-31 14:58:40.857
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-31 14:59:11.628 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-31 14:59:11.629
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-31 14:59:28.777 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-31 14:59:28.778
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-31 15:00:04.677 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-31 15:00:04.678
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-31 15:00:19.835 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-31 15:00:19.836
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-31 15:01:38.153 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-31 15:01:38.154
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-31 15:59:26.057 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-31 15:59:26.057
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-31 16:03:47.067 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-31 16:03:47.068
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-31 16:07:54.088 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-31 16:07:54.089
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-31 16:08:56.820 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-31 16:08:56.821
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-31 16:15:51.789 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-31 16:15:51.790
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-31 17:08:17.055 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-31 17:08:17.056
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-08-31 17:09:43.613 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-08-31 17:09:43.614
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-09-02 14:37:07.268 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-09-02 14:37:07.268
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-09-02 14:38:04.905 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-09-02 14:38:04.906
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-09-14 20:54:02.694 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-09-14 20:54:02.695
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-09-14 20:56:33.831 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-09-14 20:56:33.832
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-09-14 21:03:41.614 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-09-14 21:03:41.615
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-09-14 21:19:47.241 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-09-14 21:19:47.242
+!MESSAGE Run scrip in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-09-14 21:21:02.773 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-09-14 21:21:02.773
+!MESSAGE Run scrip in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-09-14 21:32:15.247 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-09-14 21:32:15.247
+!MESSAGE Run scrip in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-09-14 21:33:00.714 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-09-14 21:33:00.715
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-09-14 21:33:28.304 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-09-14 21:33:28.305
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-09-14 21:33:56.350 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-09-14 21:33:56.351
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-09-14 21:34:36.032 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-09-14 21:34:36.033
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3
+!SESSION 2019-09-14 21:34:56.611 -----------------------------------------------
+eclipse.buildId=unknown
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -clean -nl zh_CN -configuration /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/workspace_oplrun
+
+!ENTRY ilog.odms.ide.opllang.remote 1 0 2019-09-14 21:34:56.612
+!MESSAGE Run 配置 1 in /home/dengqi/project5/Thesis/multiswitch/cplex/problem3

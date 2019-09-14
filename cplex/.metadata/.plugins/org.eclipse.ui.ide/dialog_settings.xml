@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="ExternalProjectImportWizard">
+		<item value="false" key="WizardProjectsImportPage.STORE_NESTED_PROJECTS"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
+		<item value="" key="IloExternalProjectImportWizard.STORE_ROOT_ARCHIVE"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
+		<item value="" key="IloExternalProjectImportWizard.STORE_ROOT_DIRECTORY"/>
+		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="/media/dengqi/新加卷/DENG/Project/Project3/IEEE TON/第一个算法代码（包括CPlex求解和其他步骤/CPLEX solver for TE/Path"/>
+			<item value="/home/dengqi/Thesis/flowmap/flowmap_cplex"/>
+		</list>
+		<list key="WizardProjectsImportPage.STORE_ARCHIVES">
+			<item value=""/>
+		</list>
+	</section>
+</section>

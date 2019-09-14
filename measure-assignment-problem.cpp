@@ -505,3 +505,86 @@ MeasureAssignmentProblem::OutPut(const string&filename)
 	}
 	ofs.close();
 }
+
+void 
+MeasureAssignmentProblem::OutPutCplexDat(const string &fileName)
+{
+	ofstream ofs(fileName.c_str());
+	ofs<<"F="<<m_network->m_coarseFlowNum<<';'<<endl;//粗流总数
+	ofs<<"S="<<m_measureNodes.size()<<';'<<endl;//测量节点数
+	ofs<<"M="<<m_A.size()<<';'<<endl;//分段函数段数
+/**************************************/
+	ofs<<"A=[";
+	for(size_t i=0;i<m_A.size();i++)
+	{
+		ofs<<m_A[i];
+		if(i<m_A.size()-1)
+			ofs<<',';
+	}
+	ofs<<"];"<<endl;
+
+	ofs<<"B=[";
+	for(size_t i=0;i<m_B.size();i++)
+	{
+		ofs<<-m_B[i];
+		if(i<m_B.size()-1)
+			ofs<<',';
+	}
+	ofs<<"];"<<endl;
+/**************************************/
+
+	ofs<<"Si=[";
+	for(size_t i=0;i<m_network->m_coarseFlowNum;i++)
+	{
+		if(i!=0)
+			ofs<<"    ";
+		ofs<<'{';
+		shared_ptr<Flow>flow=m_network->m_flows[i];
+		vector<uint32_t>nodePath=flow->m_nodePaths[0];
+		vector<uint32_t>Si;
+		for(uint32_t node:nodePath)
+		{
+			for(uint32_t v=0;v<m_measureNodes.size();v++)
+			{
+				if(node==m_measureNodes[v])
+				{
+					Si.push_back(v);
+				}
+			}
+
+		}
+		//sort(Si.begin(),Si.end());
+		for(size_t v=0;v<Si.size();v++)
+		{
+			ofs<<Si[v];
+			if(v<Si.size()-1)
+				ofs<<',';
+		}
+		ofs<<'}';
+		if(i<m_network->m_coarseFlowNum-1)
+			ofs<<','<<endl;
+	}
+	ofs<<"];"<<endl;
+/**************************************/
+	ofs<<"weight=[";
+	for(size_t i=0;i<m_network->m_coarseFlowNum;i++)
+	{
+		ofs<<m_network->m_flows[i]->m_weight;
+		if(i<m_network->m_coarseFlowNum-1)
+			ofs<<',';
+	}
+	ofs<<"];"<<endl;
+/**************************************/
+	ofs<<"N=[";
+	for(size_t v=0;v<m_nodeCap.size();v++)
+	{
+		ofs<<m_nodeCap[v];
+		if(v<m_nodeCap.size()-1)
+			ofs<<',';
+	}
+	ofs<<"];"<<endl;
+
+
+
+
+}

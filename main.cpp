@@ -19,7 +19,7 @@ int main()
 	string topoName="Geant";
 	string topoFileName=dir+"Topology_"+topoName+".txt";
 
-	string flowFileName=dir+topoName+"flow.txt"; 
+	string flowFileName=dir+topoName+"flow_12w.txt"; 
 
 	string pathFileName=dir+topoName+"Path.txt";
 
@@ -50,11 +50,15 @@ int main()
 	assign.SetObjDualNum(10);
 	assign.SetMuStepLength(0.0001);
 	assign.SetStopIterCon(50,50);
+	string datFileName="./cplex/problem3/problem3.dat";
+	assign.OutPutCplexDat(datFileName);
+	/*
 	cout<<"***********run*******************"<<endl;
 	cout<<"run..."<<endl;
 	assign.run();
 	cout<<"********result*******************"<<endl;
 	assign.Print();
+	*/
 //	assign.OutPut(assignFileName);
 
 
