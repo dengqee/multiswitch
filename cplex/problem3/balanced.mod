@@ -1,9 +1,10 @@
 /*********************************************
  * OPL 12.7.1.0 Model
  * Author: dengqi
- * Creation Date: 2019年8月29日 at 上午10:09:09
+ * Creation Date: 2019年10月8日 at 下午4:18:46
+ 无容量约束的负载均衡
  *********************************************/
- int F=...;//粗流总数
+int F=...;//粗流总数
  int S=...;//测量节点数量
  int M=...;//分段函数的段数
  range conRange=0..M-1;//分段函数条件的范围
@@ -18,10 +19,11 @@
   
  dvar float+ x[flows][measureNodeRange];
  dvar float phy[measureNodeRange];
+ dvar float lambda;
  dvar int load[measureNodeRange];
- dvar float total;
+ dvar int total;
  minimize
- 	sum(v in measureNodeRange)phy[v];
+ 	lambda;
  
  subject to
  {
@@ -32,13 +34,14 @@
  	forall(i in flows)
  	  sum(v in Si[i])x[i][v]>=1;
  	forall(v in measureNodeRange)
- 	  load[v]==sum(i in flows)weight[i]*x[i][v];
+ 	  {
+ 	   	  load[v]==sum(i in flows)weight[i]*x[i][v];
+ 	   	  phy[v]==load[v];
+ 	  }
+ 	  
  	forall(v in measureNodeRange)
-	  {
-	  	forall(m in conRange)
-	  	  A[m]*load[v]-B[m]*N[v]<=phy[v];
+	  {	  	
+	  	  sum(i in flows)weight[i]*x[i][v]<=lambda;
 	  }
 	  total==sum(v in measureNodeRange)load[v];
  }
- 
- 

@@ -17,7 +17,10 @@ using namespace std;
 #define LAMBDA_LOG 1
 #define MU_LOG 1
 
-#define RAND_SEED 1 //随机种子
+#define CAP_ERR 0.1//计算节点容量时的平均误差
+#define E 2.718 //自然对数的底数
+
+#define RAND_SEED 1//随机种子
 class PiecewiseFunc
 {
 private:
@@ -102,6 +105,7 @@ class MeasureAssignmentProblem: public ProblemBase
 private:
 	/***********final result**********/
 	vector<vector<uint32_t> > m_x;
+	vector<vector<double> >m_x_cplex;//cplex求解出的结果
 	vector<double> m_lambda;//diff to dev,dev2
 	vector<uint32_t>m_load;
 	/********************************/
@@ -148,7 +152,7 @@ public:
 
 	virtual ~MeasureAssignmentProblem();
 
-	void SetNodeCapacity(uint32_t n);//set m_nodeCap=random,m_nodeCap<n
+	void SetNodeCapacity();//set m_nodeCap=random,m_nodeCap<n,n为节点上的最大负载
 
 	void SetLambda0(vector<double> lambda0);
 
@@ -198,7 +202,15 @@ public:
 	void OutPut(const string &filename);//output result
 
 	void OutPutCplexDat(const string &fileName);//输出Cplex的dat文件
+	
+	void ReadCplexResult(const string &fileName);//读取Cplex的输出文件
 
+	//以下三个接口packetFile为总的packet文件，dir为输出分配方案的文件夹
+	void OutPutPacketOnMeasureNode(const string &packetFile,const string &dir);//输出分配任务后每个节点测量的数据包到文件中
+
+	void OutPutPacketOnMeasureNode_ori(const string &packetFile,const string &dir);//输出原始分配任务后每个节点测量的数据包到文件中
+
+	void OutPutPacketOnMeasureNode_ran(const string &packetFile,const string &dir);//输出随机分配任务后每个节点测量的数据包到文件中
 
 };
 

@@ -18,8 +18,8 @@
   
  dvar float+ x[flows][measureNodeRange];
  dvar float phy[measureNodeRange];
- dvar float load[measureNodeRange];
- dvar float total;
+ dvar int load[measureNodeRange];
+ dvar int total;
  minimize
  	sum(v in measureNodeRange)phy[v];
  

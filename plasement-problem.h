@@ -39,6 +39,8 @@ public:
 	virtual void run();//greedy algrothm
 
 	virtual void Print();
+	
+	void OutPut(const string &outfile);
 
 
 };

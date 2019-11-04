@@ -13,6 +13,12 @@
 			<ref name="problem3_main.mod" type="model">
 			</ref>
 		</config>
+		<config default="false" name="&amp;#37197;&amp;#32622; 2" category="opl">
+			<ref name="balanced.mod" type="model">
+			</ref>
+			<ref name="problem3.dat" type="data">
+			</ref>
+		</config>
 	</configs>
 	
 </project>

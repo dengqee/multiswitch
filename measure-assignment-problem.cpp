@@ -13,6 +13,9 @@
 #include<cstdlib>
 #include<unistd.h>
 #include<fstream>
+#include<sstream>
+#include<cmath>
+#include<functional>
 using namespace std;
 /*{{{*/
 
@@ -46,7 +49,7 @@ MeasureAssignmentProblem::MeasureAssignmentProblem(shared_ptr<Network> network,s
 	for(auto it=network->m_measureNodes.begin();it!=network->m_measureNodes.end();it++)
 		m_measureNodes.push_back(*it);
 	m_load_tmp=vector<uint32_t>(m_measureNodes.size(),0);
-	SetNodeCapacity(network->m_fineFlowNum);
+	SetNodeCapacity();//设置容量
 
 }
 
@@ -58,12 +61,33 @@ MeasureAssignmentProblem::~MeasureAssignmentProblem()
 }
 
 void 
-MeasureAssignmentProblem::SetNodeCapacity(uint32_t n)
+MeasureAssignmentProblem::SetNodeCapacity()
 {
+	m_nodeCap.clear();
 	srand(RAND_SEED);
-	for(int i=0;i<m_measureNodes.size();i++)
+	int mmax=0,mmin=120000;
+	vector<uint32_t>all_cap;//为23个节点都产生一个容量
+	int nodetotal=m_network->m_topo->GetNodeNum();//拓扑的总节点数
+	for(int i=0;i<nodetotal;i++)
 	{
-		m_nodeCap.push_back(rand()%n);
+		//int w_max=4000;//cmsketch的w
+		//int w=rand()%w_max;
+		set<uint32_t>flowIDOnNode=m_network->GetFlowOnNode(i);
+		int maxLoad=0;
+		for(auto it=flowIDOnNode.begin();it!=flowIDOnNode.end();it++)
+		{
+			maxLoad+=m_network->m_flows[*it]->m_weight;
+		}
+		all_cap.push_back(rand()%maxLoad);
+		if(mmax<maxLoad)
+			mmax=maxLoad;
+		if(mmin>maxLoad)
+			mmin=maxLoad;
+	//	m_nodeCap.push_back(rand()%);
+	}
+	for(int node:m_measureNodes)
+	{
+		m_nodeCap.push_back(all_cap[node]);
 	}
 }
 
@@ -584,7 +608,260 @@ MeasureAssignmentProblem::OutPutCplexDat(const string &fileName)
 	}
 	ofs<<"];"<<endl;
 
+	ofs.close();
 
+
+}
+
+void 
+MeasureAssignmentProblem::ReadCplexResult(const string &fileName)
+{
+	ifstream ifs(fileName.c_str());
+	istringstream lineBuffer;
+	string line;
+	getline(ifs,line);//Nmax,测量节点容量
+	getline(ifs,line);//phy，测量节点代价
+	getline(ifs,line);//load，测量节点负载
+	lineBuffer.str(line);
+	uint32_t load;
+	m_load.clear();
+	while(lineBuffer>>load)
+	{
+		m_load.push_back(load);
+	}
+	vector<vector<double> >x;
+	for(int i=0;i<m_network->m_coarseFlowNum;i++)
+	{
+		vector<double>xi;
+		for(int v=0;v<m_network->m_measureNodeNum;v++)
+		{
+			double tmp;
+			ifs>>tmp;
+			xi.push_back(tmp);
+
+		}
+		x.push_back(xi);
+	}
+	m_x_cplex=x;
+	ifs.close();
+}
+
+void 
+MeasureAssignmentProblem::OutPutPacketOnMeasureNode(const string &packetFile,const string &dir)
+{
+	string outcap=dir+"capacity.txt";
+	ofstream ofs(outcap.c_str());
+	for(auto i:m_nodeCap)
+	{
+		ofs<<i<<" ";
+	}
+	ofs.close();
+	ifstream ifs(packetFile.c_str());
+	vector<ofstream*>ofss;
+	for(int v=0;v<m_network->m_measureNodeNum;v++)
+	{
+		string outfile=dir+to_string(m_measureNodes[v])+".txt";
+		ofstream *ofs=new ofstream(outfile.c_str());
+		if(!ofs->good())
+		{
+			cerr<<"outfile err"<<endl;
+			exit(1);
+		}
+		ofss.push_back(ofs);
+	}
+	vector<vector<pair<int,int>>>numarea(m_network->m_coarseFlowNum,
+			vector<pair<int,int>>(m_network->m_measureNodeNum,make_pair(-1,-1)));
+												//记录每条粗流在各个节点上测量的num区间,
+											    //(-1,-1)表示不测量
+	for(int i=0;i<m_network->m_coarseFlowNum;i++)
+	{
+		int weight=m_network->m_flows[i]->m_weight;
+		int start=0;
+		for(int v=0;v<m_network->m_measureNodeNum;v++)
+		{
+			if(m_x_cplex[i][v]<1e-8)
+				continue;
+			int first=start;
+			int second=first+round(weight*m_x_cplex[i][v])-1;
+			start=second+1;
+			numarea[i][v]=make_pair(first,second);
+
+		}
+	}
+	istringstream lineBuffer;
+	string line;
+	set<uint32_t>fs1,fs2;
+	int sum=0;
+	while(getline(ifs,line))
+	{
+		lineBuffer.str(line);
+		uint32_t s,t,num,flowID;
+		lineBuffer>>s>>t>>num;
+//		fs1.insert(s*100000+t*1000+num);
+		if(t<s)
+			flowID=s*(m_network->m_topo->GetNodeNum()-1)+t;
+		else
+			flowID=s*(m_network->m_topo->GetNodeNum()-1)+t-1;
+		shared_ptr<Flow>flow=m_network->m_flows[flowID];
+		bool flag=false;
+		for(int v=0;v<m_network->m_measureNodeNum;v++)
+		{
+			if(numarea[flowID][v].first==-1&&numarea[flowID][v].second==-1)
+				continue;
+			if(num>=numarea[flowID][v].first&&num<=numarea[flowID][v].second)
+			{
+				*ofss[v]<<line<<endl;
+//				fs2.insert(s*100000+t*1000+num);
+				flag=true;
+			}
+		}
+		//if(!flag)
+		//{
+		//	fs2.insert(s*100000+t*1000+num);
+		//	sum++;
+
+		//}
+
+	}
+	cout<<fs2.size()<<" "<<sum<<endl;//输出的是未写入的流
+	for(int v=0;v<m_network->m_measureNodeNum;v++)
+	{
+		ofss[v]->close();
+		delete ofss[v];
+	}
+
+
+}
+void 
+MeasureAssignmentProblem::OutPutPacketOnMeasureNode_ori(const string &packetFile,const string &dir)
+{
+	ifstream ifs(packetFile.c_str());
+	vector<ofstream*>ofss;
+	for(int v=0;v<m_network->m_measureNodeNum;v++)
+	{
+		string outfile=dir+to_string(m_measureNodes[v])+".txt";
+		ofstream *ofs=new ofstream(outfile.c_str());
+		if(!ofs->good())
+		{
+			cerr<<"outfile err"<<endl;
+			exit(1);
+		}
+		ofss.push_back(ofs);
+	}
+	istringstream lineBuffer;
+	string line;
+	set<uint32_t>fs1,fs2;
+	int sum=0;
+	while(getline(ifs,line))
+	{
+		lineBuffer.str(line);
+		uint32_t s,t,num,flowID;
+		lineBuffer>>s>>t>>num;
+		//fs1.insert(s*100000+t*1000+num);
+		if(t<s)
+			flowID=s*(m_network->m_topo->GetNodeNum()-1)+t;
+		else
+			flowID=s*(m_network->m_topo->GetNodeNum()-1)+t-1;
+		shared_ptr<Flow>flow=m_network->m_flows[flowID];
+		bool flag=false;
+		for(int v=0;v<m_network->m_measureNodeNum;v++)
+		{
+			set<uint32_t>pathnode(flow->m_nodePaths[0].begin(),flow->m_nodePaths[0].end());//第0条路径是最短路
+			if(find(pathnode.begin(),pathnode.end(),m_measureNodes[v])!=pathnode.end())//if在pathnode中找到了第v个节点
+			{
+				*ofss[v]<<line<<endl;
+			//	fs2.insert(s*100000+t*1000+num);
+				flag=true;
+			}
+		}
+		if(!flag)
+		{
+			fs2.insert(s*100000+t*1000+num);
+			sum++;
+
+		}
+
+	}
+	cout<<fs2.size()<<" "<<sum<<endl;
+	for(int v=0;v<m_network->m_measureNodeNum;v++)
+	{
+		ofss[v]->close();
+		delete ofss[v];
+	}
+
+
+}
+void 
+MeasureAssignmentProblem::OutPutPacketOnMeasureNode_ran(const string &packetFile,const string &dir)
+{
+	ifstream ifs(packetFile.c_str());
+	vector<ofstream*>ofss;
+	for(int v=0;v<m_network->m_measureNodeNum;v++)
+	{
+		string outfile=dir+to_string(m_measureNodes[v])+".txt";
+		ofstream *ofs=new ofstream(outfile.c_str());
+		if(!ofs->good())
+		{
+			cerr<<"outfile err"<<endl;
+			exit(1);
+		}
+		ofss.push_back(ofs);
+	}
+	istringstream lineBuffer;
+	string line;
+	set<uint32_t>fs1,fs2;
+	int sum=0;
+	while(getline(ifs,line))
+	{
+		lineBuffer.str(line);
+		uint32_t s,t,num,flowID;
+		lineBuffer>>s>>t>>num;
+		uint32_t flowkey=s*100000+t*1000+num;
+		hash<uint32_t>hash_uint32_t;
+		
+
+		//fs1.insert(s*100000+t*1000+num);
+		if(t<s)
+			flowID=s*(m_network->m_topo->GetNodeNum()-1)+t;
+		else
+			flowID=s*(m_network->m_topo->GetNodeNum()-1)+t-1;
+		shared_ptr<Flow>flow=m_network->m_flows[flowID];
+		set<uint32_t>pathnode(flow->m_nodePaths[0].begin(),flow->m_nodePaths[0].end());//第0条路径是最短路
+		set<uint32_t>measureNodesSet=m_network->m_measureNodes;
+		vector<uint32_t>ins;
+		set_intersection(pathnode.begin(),pathnode.end(),
+				measureNodesSet.begin(),measureNodesSet.end(),
+				insert_iterator<vector<uint32_t>>(ins,ins.begin()));//求测量节点和路径节点之间的交集，保存在ins
+		
+		uint32_t hash_val=hash_uint32_t(flowkey)%ins.size();//计算哈希值
+		uint32_t measureNode=ins[hash_val];//测量节点号
+
+
+		bool flag=false;
+		for(int v=0;v<m_network->m_measureNodeNum;v++)
+		{
+			if(m_measureNodes[v]==measureNode)//if在pathnode中找到了第v个节点
+			{
+				*ofss[v]<<line<<endl;
+			//	fs2.insert(s*100000+t*1000+num);
+				flag=true;
+				break;
+			}
+		}
+		if(!flag)
+		{
+			fs2.insert(s*100000+t*1000+num);
+			sum++;
+
+		}
+
+	}
+	cout<<fs2.size()<<" "<<sum<<endl;
+	for(int v=0;v<m_network->m_measureNodeNum;v++)
+	{
+		ofss[v]->close();
+		delete ofss[v];
+	}
 
 
 }
