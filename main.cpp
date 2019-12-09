@@ -34,7 +34,7 @@ int main()
 	PlasementProblem plasementProblem(geant,measureNodeNum);
 	plasementProblem.run();
 	plasementProblem.Print();
-	string measureNodeFile="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/nodechange/22/measureNode.txt";
+	string measureNodeFile="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/packet/"+to_string(measureNodeNum)+"/measureNode.txt";
 	plasementProblem.OutPut(measureNodeFile);//输出测量节点
 
 	//设置代价函数
@@ -75,8 +75,8 @@ int main()
 //	assign.OutPutPacketOnMeasureNode_ran(packetFile,dir);
 	
 	
-	//dir="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/nodechange/22/packets_balanced/";//无容量约束的完全负载均衡
-	dir="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/nodechange/22/packets_subbalanced/rand1/";//有容量约束的负载均衡
+	//dir="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/packet/"+to_string(measureNodeNum)+"/packets_balanced/";//无容量约束的完全负载均衡
+	dir="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/packet/"+to_string(measureNodeNum)+"/packets_subbalanced/3000/";//有容量约束的负载均衡
 	assign.OutPutPacketOnMeasureNode(packetFile,dir);//输出经过负载均衡的测量分配方案
 
 
