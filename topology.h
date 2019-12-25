@@ -13,6 +13,8 @@
 #include<vector>
 #include<string>
 #include<map>
+#include<set>
+#include<algorithm>
 
 using namespace std;
 
@@ -24,9 +26,10 @@ private:
 	uint32_t m_linkNum;
 	vector<pair<uint32_t,uint32_t> >m_links;
 	map<pair<uint32_t,uint32_t>,vector<uint32_t> > m_paths;//all shortest paths
+	map<uint32_t,vector<uint32_t> > m_nodes;//每个节点的相邻节点
 public:
 	Topology();
-	Topology(const string &topoName);
+	Topology(const string &topoName);//拓扑中的边没有反向边，即不会同时出现0 2和2 0
 
 	Topology(const Topology &topo);
 
@@ -44,6 +47,7 @@ public:
 
 	uint32_t GetPath(uint32_t src, uint32_t dst, vector<uint32_t>&path);//return the length of path 
 
+	uint32_t GetDegree(uint32_t node,vector<uint32_t>&neighbor);//返回节点的度，并且neighbor保存邻居
 
 	
 

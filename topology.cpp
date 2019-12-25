@@ -16,7 +16,8 @@ Topology::Topology():
 	m_nodeNum(0),
 	m_linkNum(0),
 	m_links(vector<pair<uint32_t,uint32_t> >()),
-	m_paths(map<pair<uint32_t,uint32_t>,vector<uint32_t> >())
+	m_paths(map<pair<uint32_t,uint32_t>,vector<uint32_t> >()),
+	m_nodes(map<uint32_t,vector<uint32_t> >())
 {
 
 }
@@ -29,7 +30,9 @@ Topology::Topology(const string &topoName)
 Topology::Topology(const Topology &topo):
 	m_nodeNum(topo.m_nodeNum),
 	m_linkNum(topo.m_linkNum),
-	m_links(topo.m_links)
+	m_links(topo.m_links),
+	m_paths(topo.m_paths),
+	m_nodes(topo.m_nodes)
 {
 	
 }
@@ -72,6 +75,10 @@ Topology::ReadTopology(const string &topoName)
 		lineBuffer.str(line);
 		lineBuffer>>src;
 		lineBuffer>>dst;
+		if(find(m_nodes[src].begin(),m_nodes[src].end(),dst)==m_nodes[src].end())
+			m_nodes[src].push_back(dst);
+		if(find(m_nodes[dst].begin(),m_nodes[dst].end(),src)==m_nodes[dst].end())
+			m_nodes[dst].push_back(src);
 		links.push_back(make_pair(src,dst));
 		
 	}
@@ -215,4 +222,11 @@ Topology::GetPath(uint32_t src,uint32_t dst,vector<uint32_t>&path)
 	{
 		return 0;
 	}
+}
+
+uint32_t 
+Topology::GetDegree(uint32_t node,vector<uint32_t>&neighbor)
+{
+	neighbor=m_nodes[node];
+	return neighbor.size();
 }
