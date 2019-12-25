@@ -623,6 +623,8 @@ MeasureAssignmentProblem::ReadCplexResult(const string &fileName)
 	getline(ifs,line);//Nmax,测量节点容量
 	getline(ifs,line);//phy，测量节点代价
 	getline(ifs,line);//load，测量节点负载
+
+	lineBuffer.clear();
 	lineBuffer.str(line);
 	uint32_t load;
 	m_load.clear();
@@ -695,6 +697,7 @@ MeasureAssignmentProblem::OutPutPacketOnMeasureNode(const string &packetFile,con
 	int sum=0;
 	while(getline(ifs,line))
 	{
+		lineBuffer.clear();
 		lineBuffer.str(line);
 		uint32_t s,t,num,flowID;
 		lineBuffer>>s>>t>>num;
@@ -755,6 +758,7 @@ MeasureAssignmentProblem::OutPutPacketOnMeasureNode_ori(const string &packetFile
 	int sum=0;
 	while(getline(ifs,line))
 	{
+		lineBuffer.clear();
 		lineBuffer.str(line);
 		uint32_t s,t,num,flowID;
 		lineBuffer>>s>>t>>num;
@@ -814,6 +818,7 @@ MeasureAssignmentProblem::OutPutPacketOnMeasureNode_ran(const string &packetFile
 	int sum=0;
 	while(getline(ifs,line))
 	{
+		lineBuffer.clear();
 		lineBuffer.str(line);
 		uint32_t s,t,num,flowID;
 		lineBuffer>>s>>t>>num;

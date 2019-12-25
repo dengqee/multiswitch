@@ -11,27 +11,29 @@
 #include<string>
 #include"plasement-problem.h"
 #include"measure-assignment-problem.h"
+#include<stdlib.h>
 
 using namespace std;
 int main()
 {
 	string dir="/home/dengqi/project5/Thesis/multiswitch/data/";
-	string topoName="Geant";
+	string topoName="BA50";
 	string topoFileName=dir+"Topology_"+topoName+".txt";
 
-	string flowFileName=dir+topoName+"flow_126388.txt"; 
+	string flowFileName=dir+topoName+"flow.txt"; 
 
 	string pathFileName=dir+topoName+"Path.txt";
 
 
-	shared_ptr<Network> geant(new Network(topoFileName,flowFileName));
-	geant->GenFlowPath();
+	shared_ptr<Network> net(new Network(topoFileName,flowFileName));
+	net->GenFlowPath();
+	net->m_topo->WritePath("data/BA50Path.txt");
 
-	uint32_t measureNodeNum=22;
+	uint32_t measureNodeNum=31;
 	
 
 	//求解放置问题
-	PlasementProblem plasementProblem(geant,measureNodeNum);
+	PlasementProblem plasementProblem(net,measureNodeNum);
 	plasementProblem.run();
 	plasementProblem.Print();
 	string measureNodeFile="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/packet/"+to_string(measureNodeNum)+"/measureNode.txt";
@@ -44,7 +46,7 @@ int main()
 
 	//求解任务分配问题
 	string assignFileName=dir+"assignment_"+topoName+"_"+to_string(measureNodeNum)+"_x.txt";
-	MeasureAssignmentProblem assign(geant,costFun);
+	MeasureAssignmentProblem assign(net,costFun);
 	assign.SetLambda0(vector<double>(measureNodeNum,5000));
 	assign.SetObjNum(10);
 	assign.SetLambdaStepLength(0.1);
@@ -67,17 +69,25 @@ int main()
 	}
 	string resCplex="./cplex/problem3/Nmax_phy_load_x.txt";
 	assign.ReadCplexResult(resCplex);
-	string packetFile="./data/Geant_126388_packets_new.txt";
+	string packetFile="./data/BA50_packets.txt";
 
-	//dir="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/nodechange/22/packets_original/";//original
-	//assign.OutPutPacketOnMeasureNode_ori(packetFile,dir);
-//	dir="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/nodechange/22/packets_random/";//random
-//	assign.OutPutPacketOnMeasureNode_ran(packetFile,dir);
+	dir="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/packet/"+to_string(measureNodeNum)+"/packets_original/";//original
+
+	string md="mkdir -p "+dir;
+	system(md.c_str());
+
+	assign.OutPutPacketOnMeasureNode_ori(packetFile,dir);
+	dir="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/packet/"+to_string(measureNodeNum)+"/packets_random/";//random
+
+	md="mkdir -p "+dir;
+	system(md.c_str());
+
+	assign.OutPutPacketOnMeasureNode_ran(packetFile,dir);
 	
 	
 	//dir="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/packet/"+to_string(measureNodeNum)+"/packets_balanced/";//无容量约束的完全负载均衡
-	dir="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/packet/"+to_string(measureNodeNum)+"/packets_subbalanced/3000/";//有容量约束的负载均衡
-	assign.OutPutPacketOnMeasureNode(packetFile,dir);//输出经过负载均衡的测量分配方案
+	//dir="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/packet/"+to_string(measureNodeNum)+"/packets_subbalanced/3000/";//有容量约束的负载均衡
+	//assign.OutPutPacketOnMeasureNode(packetFile,dir);//输出经过负载均衡的测量分配方案
 
 
 
