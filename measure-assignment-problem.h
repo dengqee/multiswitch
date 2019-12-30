@@ -20,7 +20,7 @@ using namespace std;
 #define CAP_ERR 0.1//计算节点容量时的平均误差
 #define E 2.718 //自然对数的底数
 
-#define RAND_SEED 1//随机种子
+//#define RAND_SEED 1//随机种子
 class PiecewiseFunc
 {
 private:
@@ -152,7 +152,7 @@ public:
 
 	virtual ~MeasureAssignmentProblem();
 
-	void SetNodeCapacity();//set m_nodeCap=random,m_nodeCap<n,n为节点上的最大负载
+	void SetNodeCapacity(uint32_t rand_seed);//set m_nodeCap=random,m_nodeCap<n,n为节点上的最大负载 参数为随机种子
 
 	void SetLambda0(vector<double> lambda0);
 

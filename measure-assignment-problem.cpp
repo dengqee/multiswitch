@@ -49,7 +49,7 @@ MeasureAssignmentProblem::MeasureAssignmentProblem(shared_ptr<Network> network,s
 	for(auto it=network->m_measureNodes.begin();it!=network->m_measureNodes.end();it++)
 		m_measureNodes.push_back(*it);
 	m_load_tmp=vector<uint32_t>(m_measureNodes.size(),0);
-	SetNodeCapacity();//设置容量
+//	SetNodeCapacity();//设置容量
 
 }
 
@@ -61,12 +61,12 @@ MeasureAssignmentProblem::~MeasureAssignmentProblem()
 }
 
 void 
-MeasureAssignmentProblem::SetNodeCapacity()
+MeasureAssignmentProblem::SetNodeCapacity(uint32_t rand_seed)
 {
 	m_nodeCap.clear();
-	srand(RAND_SEED);
+	srand(rand_seed);
 	int mmax=0,mmin=120000;
-	vector<uint32_t>all_cap;//为23个节点都产生一个容量
+	vector<uint32_t>all_cap;//为所有节点都产生一个容量
 	int nodetotal=m_network->m_topo->GetNodeNum();//拓扑的总节点数
 	for(int i=0;i<nodetotal;i++)
 	{
@@ -87,8 +87,10 @@ MeasureAssignmentProblem::SetNodeCapacity()
 	}
 	for(int node:m_measureNodes)
 	{
-		//m_nodeCap.push_back(all_cap[node]);
-		m_nodeCap.push_back(3300);//所有节点设置为相同的容量
+		if(rand_seed<=10)
+			m_nodeCap.push_back(all_cap[node]);
+		else
+			m_nodeCap.push_back(rand_seed*1.1);//所有节点设置为相同的容量
 	}
 }
 

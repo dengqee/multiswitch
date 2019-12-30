@@ -29,7 +29,8 @@ int main()
 	net->GenFlowPath();
 	net->m_topo->WritePath("data/BA50Path.txt");
 
-	uint32_t measureNodeNum=31;
+	uint32_t measureNodeNum=40;
+	uint32_t rand_seed=1000;//1-10为随机种子，1000-10000为节点容量
 	
 
 	//求解放置问题
@@ -38,7 +39,7 @@ int main()
 	plasementProblem.Print();
 	string measureNodeFile="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/packet/"+to_string(measureNodeNum)+"/measureNode.txt";
 	plasementProblem.OutPut(measureNodeFile);//输出测量节点
-
+/*************没有用****************/
 	//设置代价函数
 	vector<double>piece={0, 0.33, 0.67, 0.9, 1};
 	vector<double>slop={1, 3, 10, 70, 500};
@@ -54,6 +55,9 @@ int main()
 	assign.SetObjDualNum(10);
 	assign.SetMuStepLength(0.0001);
 	assign.SetStopIterCon(50,50);
+/*********************************/
+
+	assign.SetNodeCapacity(rand_seed);//设置节点容量
 	string datFileName="./cplex/problem3/problem3.dat";
 	assign.OutPutCplexDat(datFileName);
 
@@ -70,7 +74,7 @@ int main()
 	string resCplex="./cplex/problem3/Nmax_phy_load_x.txt";
 	assign.ReadCplexResult(resCplex);
 	string packetFile="./data/BA50_packets.txt";
-
+/*
 	dir="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/packet/"+to_string(measureNodeNum)+"/packets_original/";//original
 
 	string md="mkdir -p "+dir;
@@ -84,10 +88,12 @@ int main()
 
 	assign.OutPutPacketOnMeasureNode_ran(packetFile,dir);
 	
-	
-	//dir="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/packet/"+to_string(measureNodeNum)+"/packets_balanced/";//无容量约束的完全负载均衡
-	//dir="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/packet/"+to_string(measureNodeNum)+"/packets_subbalanced/3000/";//有容量约束的负载均衡
-	//assign.OutPutPacketOnMeasureNode(packetFile,dir);//输出经过负载均衡的测量分配方案
+*/	
+	dir="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/packet/"+to_string(measureNodeNum)+"/packets_balanced/";//无容量约束的完全负载均衡
+	//dir="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/packet/"+to_string(measureNodeNum)+"/packets_subbalanced/"+to_string(rand_seed)+"/";//有容量约束的负载均衡
+	string md="mkdir -p "+dir;
+	system(md.c_str());
+	assign.OutPutPacketOnMeasureNode(packetFile,dir);//输出经过负载均衡的测量分配方案
 
 
 

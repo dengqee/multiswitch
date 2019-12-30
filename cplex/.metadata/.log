@@ -1644,3 +1644,78 @@ java.io.FileNotFoundException: /home/dengqi/project5/Thesis/multiswitch/cplex/.m
 
 !ENTRY ilog.odms.ide.opllang 1 0 2019-12-25 20:28:24.966
 !MESSAGE concert_wrap.IloEndMT
+!SESSION 2019-12-27 21:48:07.019 -----------------------------------------------
+eclipse.buildId=Build 0
+java.fullversion=JRE 1.8.0 IBM J9 2.8 Linux amd64-64 Compressed References 20170209_336038 (JIT enabled, AOT enabled)
+J9VM - R28_20170209_0201_B336038
+JIT  - tr.r14.java.green_20170125_131456
+GC   - R28_20170209_0201_B336038_CMPRSS
+J9CL - 20170209_336038
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=zh_CN
+Command-line arguments:  -os linux -ws gtk -arch x86_64 -clean
+
+!ENTRY org.eclipse.equinox.ds 4 0 2019-12-27 21:48:07.607
+!MESSAGE FrameworkEvent ERROR
+!STACK 0
+org.osgi.framework.BundleException: Could not resolve module: org.eclipse.equinox.ds [4]
+  Unresolved requirement: Import-Package: org.eclipse.equinox.internal.util.event; version="1.0.0"
+
+	at org.eclipse.osgi.container.Module.start(Module.java:434)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1582)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1562)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.doContainerStartLevel(ModuleContainer.java:1533)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1476)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:230)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:340)
+
+!ENTRY org.eclipse.equinox.registry 2 0 2019-12-27 21:48:11.016
+!MESSAGE 忽略了捆绑软件“ilog.views.eclipse.framework.runtime”中的扩展和扩展点。捆绑软件未被标记为单一捆绑软件。
+
+!ENTRY org.eclipse.equinox.registry 2 0 2019-12-27 21:48:11.191
+!MESSAGE 忽略了捆绑软件“ilog.views.eclipse.gantt.runtime”中的扩展和扩展点。捆绑软件未被标记为单一捆绑软件。
+
+!ENTRY org.eclipse.equinox.registry 2 0 2019-12-27 21:48:11.319
+!MESSAGE 忽略了捆绑软件“ilog.views.eclipse.chart.runtime”中的扩展和扩展点。捆绑软件未被标记为单一捆绑软件。
+
+!ENTRY ilog.odms.ide.core 1 0 2019-12-27 21:48:17.552
+!MESSAGE ODM Bundle is OFF
+
+!ENTRY org.eclipse.core.resources 4 568 2019-12-27 21:53:15.636
+!MESSAGE 未能写“/problem3”的元数据。
+!STACK 0
+java.io.FileNotFoundException: /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/.plugins/org.eclipse.core.resources/.projects/problem3/.markers.snap (没有那个文件或目录)
+	at java.io.FileOutputStream.open(FileOutputStream.java:286)
+	at java.io.FileOutputStream.<init>(FileOutputStream.java:226)
+	at java.io.FileOutputStream.<init>(FileOutputStream.java:144)
+	at org.eclipse.core.internal.localstore.SafeChunkyOutputStream.<init>(SafeChunkyOutputStream.java:45)
+	at org.eclipse.core.internal.localstore.SafeChunkyOutputStream.<init>(SafeChunkyOutputStream.java:41)
+	at org.eclipse.core.internal.resources.SaveManager.visitAndSnap(SaveManager.java:1745)
+	at org.eclipse.core.internal.resources.SaveManager.visitAndSnap(SaveManager.java:1828)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1202)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1144)
+	at org.eclipse.core.internal.resources.DelayedSnapshotJob.run(DelayedSnapshotJob.java:51)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY org.eclipse.ui.ide 4 4 2019-12-28 09:51:44.541
+!MESSAGE 保存工作空间时出现问题
+
+!ENTRY org.eclipse.ui.ide 4 1 2019-12-28 09:51:44.541
+!MESSAGE 在尝试保存工作台的状态时出现问题。
+!SUBENTRY 1 org.eclipse.core.resources 4 568 2019-12-28 09:51:44.542
+!MESSAGE 未能写“/problem3”的元数据。
+!STACK 0
+java.io.FileNotFoundException: /home/dengqi/project5/Thesis/multiswitch/cplex/.metadata/.plugins/org.eclipse.core.resources/.projects/problem3/.markers (没有那个文件或目录)
+	at java.io.FileOutputStream.open(FileOutputStream.java:286)
+	at java.io.FileOutputStream.<init>(FileOutputStream.java:226)
+	at java.io.FileOutputStream.<init>(FileOutputStream.java:173)
+	at org.eclipse.core.internal.localstore.SafeFileOutputStream.<init>(SafeFileOutputStream.java:51)
+	at org.eclipse.core.internal.resources.SaveManager.visitAndSave(SaveManager.java:1635)
+	at org.eclipse.core.internal.resources.SaveManager.visitAndSave(SaveManager.java:1716)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1177)
+	at org.eclipse.core.internal.resources.Workspace.save(Workspace.java:2344)
+	at org.eclipse.ui.internal.ide.application.IDEWorkbenchAdvisor$5.run(IDEWorkbenchAdvisor.java:509)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+
+!ENTRY ilog.odms.ide.opllang 1 0 2019-12-28 09:51:45.168
+!MESSAGE concert_wrap.IloEndMT
