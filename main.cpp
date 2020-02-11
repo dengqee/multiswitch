@@ -27,7 +27,7 @@ int main()
 	shared_ptr<Network> geant(new Network(topoFileName,flowFileName));
 	geant->GenFlowPath();
 
-	uint32_t measureNodeNum=22;
+	uint32_t measureNodeNum=23;
 	
 
 	//求解放置问题
@@ -76,7 +76,7 @@ int main()
 	
 	
 	//dir="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/packet/"+to_string(measureNodeNum)+"/packets_balanced/";//无容量约束的完全负载均衡
-	dir="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/packet/"+to_string(measureNodeNum)+"/packets_subbalanced/3000/";//有容量约束的负载均衡
+	dir="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/packet/"+to_string(measureNodeNum)+"/packets_subbalanced/1/";//有容量约束的负载均衡
 	assign.OutPutPacketOnMeasureNode(packetFile,dir);//输出经过负载均衡的测量分配方案
 
 

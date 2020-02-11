@@ -83,12 +83,12 @@ MeasureAssignmentProblem::SetNodeCapacity()
 			mmax=maxLoad;
 		if(mmin>maxLoad)
 			mmin=maxLoad;
-	//	m_nodeCap.push_back(rand()%);
+		m_nodeCap.push_back(rand()%);
 	}
 	for(int node:m_measureNodes)
 	{
-		//m_nodeCap.push_back(all_cap[node]);
-		m_nodeCap.push_back(3300);//所有节点设置为相同的容量
+		m_nodeCap.push_back(all_cap[node]);
+		//m_nodeCap.push_back(3300);//所有节点设置为相同的容量
 	}
 }
 
