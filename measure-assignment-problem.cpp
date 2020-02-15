@@ -83,7 +83,6 @@ MeasureAssignmentProblem::SetNodeCapacity()
 			mmax=maxLoad;
 		if(mmin>maxLoad)
 			mmin=maxLoad;
-		m_nodeCap.push_back(rand()%);
 	}
 	for(int node:m_measureNodes)
 	{

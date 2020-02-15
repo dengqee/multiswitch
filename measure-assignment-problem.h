@@ -212,6 +212,7 @@ public:
 
 	void OutPutPacketOnMeasureNode_ran(const string &packetFile,const string &dir);//输出随机分配任务后每个节点测量的数据包到文件中
 
+
 };
 
 #endif /* MEASURE_ASSIGNMENT_PROBLEM_H */

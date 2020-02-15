@@ -22,7 +22,12 @@ Topology::Topology():
 
 }
 
-Topology::Topology(const string &topoName)
+Topology::Topology(const string &topoName):
+	m_nodeNum(0),
+	m_linkNum(0),
+	m_links(vector<pair<uint32_t,uint32_t> >()),
+	m_paths(map<pair<uint32_t,uint32_t>,vector<uint32_t> >()),
+	m_nodes(map<uint32_t,vector<uint32_t> >())
 {
 	ReadTopology(topoName);
 }
@@ -68,6 +73,11 @@ Topology::ReadTopology(const string &topoName)
 	getline(ifs,line);
 	lineBuffer.str(line);
 	lineBuffer>>nodeNum;
+	for(int i=0;i<nodeNum;i++)
+	{
+		pair<uint32_t,vector<uint32_t> >p(i,vector<uint32_t>());
+		m_nodes.insert(p);
+	}
 
 	while(getline(ifs,line))
 	{
