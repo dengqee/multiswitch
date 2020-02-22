@@ -880,7 +880,7 @@ MeasureAssignmentProblem::OutPutCplexDat_rout(const string&outdir,const string&i
 	for(int day=1;day<=10;day++)
 	{
 		//统计测量值流量矩阵
-		string filename=indir+"day"+to_string(day)+"/500_1_est.txt";
+		string filename=indir+"day"+to_string(day)+"/"+to_string(TCAM)+"_1_est.txt";
 		ifstream ifs(filename.c_str());
 		map<uint32_t,uint32_t>flowsval;
 		string line;
@@ -910,7 +910,7 @@ MeasureAssignmentProblem::OutPutCplexDat_rout(const string&outdir,const string&i
 		ifs.close();
 		flowsval_day_real.push_back(flowsval_real);
 
-		filename=indir+"day"+to_string(day)+"/500_TCAM.txt";
+		filename=indir+"day"+to_string(day)+"/"+to_string(TCAM)"_TCAM.txt";
 		ifs.open(filename.c_str());
 		map<uint32_t,uint32_t>tcam;
 		while(getline(ifs,line))
