@@ -43,9 +43,11 @@ Network::Network(const string &topoFileName, const string &flowFileName):
 	m_fineFlowNum(0),
 	m_flowOnNode(map<uint32_t,set<uint32_t> >()),
 	m_measureNodes(set<uint32_t>()),
-	m_measureNodeNum(0)
+	m_measureNodeNum(0),
+	m_linkCap(vector<uint64_t>())
 {
 	ReadFlow(flowFileName);
+	CalLinkCapcity();
 }
 
 Network::Network(const Network &network):
@@ -55,7 +57,8 @@ Network::Network(const Network &network):
 	m_fineFlowNum(network.m_fineFlowNum),
 	m_flowOnNode(network.m_flowOnNode),
 	m_measureNodes(network.m_measureNodes),
-	m_measureNodeNum(network.m_measureNodeNum)
+	m_measureNodeNum(network.m_measureNodeNum),
+	m_linkCap(network.m_linkCap)
 {
 
 }
@@ -170,3 +173,24 @@ Network::Print()
 	cout<<"the number of fin flows: "<<m_fineFlowNum<<endl;
 
 }
+
+void 
+Network::CalLinkCapcity()
+{
+	uint32_t node1,node2,degree1,degree2;
+	vector<uint32_t>t;
+	for(uint32_t i=0;i<m_topo->m_links.size();i++)
+	{
+		node1=m_topo->m_links[i].first;
+		node2=m_topo->m_links[i].second;
+		degree1=m_topo->GetDegree(node1,t);
+		degree2=m_topo->GetDegree(node2,t);
+		if(degree1>3&&degree2>3)
+			m_linkCap.push_back(OC192);
+		else if(degree1<=3&&degree2<=3)
+			m_linkCap.push_back(OC24);
+		else
+			m_linkCap.push_back(OC48);
+
+	}
+};

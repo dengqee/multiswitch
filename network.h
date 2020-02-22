@@ -16,6 +16,11 @@
 #include<memory>
 
 using namespace std;
+//链路容量，单位为包
+#define OC192 240000 
+#define OC48 180000
+#define OC24 30000
+#define PACKET_SIZE 1500//packet大小，字节
 
 class Flow
 {
@@ -52,6 +57,7 @@ public:
 	map<uint32_t, set<uint32_t> >m_flowOnNode;//the set of flow ID of every node
 	set<uint32_t> m_measureNodes;//nodes for measure
 	uint32_t m_measureNodeNum;//the number of measure nodes
+	vector<uint64_t>m_linkCap;//链路容量
 
 	Network(const string &topoFileName, const string &flowFileName);
 
@@ -68,6 +74,10 @@ public:
 	set<uint32_t> GetFlowOnNode(uint32_t nodeID);
 
 	void Print();//print infomation of network
+
+	void CalLinkCapcity();//计算链路容量
+
+
 
 };
 

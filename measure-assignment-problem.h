@@ -21,6 +21,8 @@ using namespace std;
 #define E 2.718 //自然对数的底数
 
 #define RAND_SEED 1//随机种子
+
+bool cmp(pair<uint32_t,uint32_t>&a,pair<uint32_t,uint32_t>&b);//使得pair按照val大到小排序
 class PiecewiseFunc
 {
 private:
@@ -212,6 +214,43 @@ public:
 
 	void OutPutPacketOnMeasureNode_ran(const string &packetFile,const string &dir);//输出随机分配任务后每个节点测量的数据包到文件中
 
+	void OutPutCplexDat_rout(//输出用于路由规划的cplex数据
+			const string&outdir,const string&indir,//outdir为输出的dat文件目录，indir为读取测量结果的目录
+			vector<map<uint32_t,uint32_t> >&allflow_day,//每天的测量流量矩阵,累加
+			vector<map<uint32_t,uint32_t> >&allflow_day_real,//每天真实流量矩阵，累加
+			vector<map<uint32_t,uint32_t> >&tcam_day,//每天TCAM中记录的流
+			vector<map<uint32_t,vector<vector<uint32_t> > > >&linkpaths_day,//每天每条流的可用链路路径
+			vector<map<uint32_t,uint32_t> >&Pi_day,//每天每条流的备选路径
+			vector<vector<vector<vector<uint32_t> > > >&delt_day//每天的delt
+			);
+
+	void Greedy_route(//贪心算法
+			const string&outdir,//outdir为输出文件目录
+			vector<map<uint32_t,uint32_t> >&allflow_day,//每天的测量流量矩阵,累加
+			vector<map<uint32_t,uint32_t> >&allflow_day_real,//每天真实流量矩阵，累加
+			vector<map<uint32_t,uint32_t> >&tcam_day,//每天TCAM中记录的流
+			vector<map<uint32_t,vector<vector<uint32_t> > > >&linkpaths_day,//每天每条流的可用链路路径
+			vector<map<uint32_t,uint32_t> >&Pi_day,//每天每条流的备选路径
+			vector<vector<vector<vector<uint32_t> > > >&delt_day//每天的delt
+			);
+	void Random_route(//随机选路
+			const string&outdir,//outdir为输出文件目录
+			vector<map<uint32_t,uint32_t> >&allflow_day,//每天的测量流量矩阵,累加
+			vector<map<uint32_t,uint32_t> >&allflow_day_real,//每天真实流量矩阵，累加
+			vector<map<uint32_t,uint32_t> >&tcam_day,//每天TCAM中记录的流
+			vector<map<uint32_t,vector<vector<uint32_t> > > >&linkpaths_day,//每天每条流的可用链路路径
+			vector<map<uint32_t,uint32_t> >&Pi_day,//每天每条流的备选路径
+			vector<vector<vector<vector<uint32_t> > > >&delt_day//每天的delt
+			);
+	void Original_route(//原始路由
+			const string&outdir,//outdir为输出文件目录
+			vector<map<uint32_t,uint32_t> >&allflow_day,//每天的测量流量矩阵,累加
+			vector<map<uint32_t,uint32_t> >&allflow_day_real,//每天真实流量矩阵，累加
+			vector<map<uint32_t,uint32_t> >&tcam_day,//每天TCAM中记录的流
+			vector<map<uint32_t,vector<vector<uint32_t> > > >&linkpaths_day,//每天每条流的可用链路路径
+			vector<map<uint32_t,uint32_t> >&Pi_day,//每天每条流的备选路径
+			vector<vector<vector<vector<uint32_t> > > >&delt_day//每天的delt
+			);
 
 };
 

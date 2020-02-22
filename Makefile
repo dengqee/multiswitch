@@ -1,16 +1,22 @@
 GCC = g++
 CFLAGS = -pthread -g -std=c++11
-FILES = main.out
-LIB = main.o topology.o network.o plasement-problem.o problem-base.o \
+FILES = main.out main_route.out
+LIB = topology.o network.o plasement-problem.o problem-base.o \
 	  measure-assignment-problem.o
 
 all: $(FILES)
 
-main.out: $(LIB) 
+main.out: main.o $(LIB)
 	$(GCC) $(CFLAGS) $^ -o main.out 
 
 main.o: main.cpp topology.h network.h
 	$(GCC) $(CFLAGS) -c main.cpp -o main.o
+
+main_route.out: main_route.o $(LIB)  
+	$(GCC) $(CFLAGS) $^ -o main_route.out 
+
+main_route.o: main_route.cpp topology.h network.h
+	$(GCC) $(CFLAGS) -c main_route.cpp -o main_route.o
 
 topology.o: topology.cpp topology.h
 	$(GCC) $(CFLAGS) -c $< -o topology.o

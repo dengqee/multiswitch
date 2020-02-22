@@ -21,15 +21,14 @@ using namespace std;
 #define INF 1<<31
 class Topology
 {
-private:
+public:
 	uint32_t m_nodeNum;
 	uint32_t m_linkNum;
-	vector<pair<uint32_t,uint32_t> >m_links;
+	vector<pair<uint32_t,uint32_t> >m_links;//单向边，即同时有2,0和0,2
 	map<pair<uint32_t,uint32_t>,vector<uint32_t> > m_paths;//all shortest paths
 	map<uint32_t,vector<uint32_t> > m_nodes;//每个节点的相邻节点
-public:
 	Topology();
-	Topology(const string &topoName);//拓扑中的边没有反向边，即不会同时出现0 2和2 0
+	Topology(const string &topoName);//拓扑文件中的边没有反向边，即不会同时出现0 2和2 0
 
 	Topology(const Topology &topo);
 

@@ -93,8 +93,13 @@ Topology::ReadTopology(const string &topoName)
 		
 	}
 	m_nodeNum=nodeNum;
-	m_linkNum=links.size();
 	m_links=links;
+	for(auto link:links)//添加双向边
+	{
+		m_links.push_back(make_pair(link.second,link.first));
+	}
+	m_linkNum=m_links.size();
+	
 	
 	ifs.close();
 	cout<<"node: "<<m_nodeNum<<" link: "<<m_linkNum<<endl;
