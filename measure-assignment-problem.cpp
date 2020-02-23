@@ -694,6 +694,7 @@ MeasureAssignmentProblem::OutPutPacketOnMeasureNode(const string &packetFile,con
 	int sum=0;
 	while(getline(ifs,line))
 	{
+		lineBuffer.clear();
 		lineBuffer.str(line);
 		uint32_t s,t,num,flowID;
 		lineBuffer>>s>>t>>num;
@@ -910,7 +911,7 @@ MeasureAssignmentProblem::OutPutCplexDat_rout(const string&outdir,const string&i
 		ifs.close();
 		flowsval_day_real.push_back(flowsval_real);
 
-		filename=indir+"day"+to_string(day)+"/"+to_string(TCAM)"_TCAM.txt";
+		filename=indir+"day"+to_string(day)+"/"+to_string(TCAM)+"_TCAM.txt";
 		ifs.open(filename.c_str());
 		map<uint32_t,uint32_t>tcam;
 		while(getline(ifs,line))
@@ -1064,6 +1065,7 @@ MeasureAssignmentProblem::OutPutCplexDat_rout(const string&outdir,const string&i
 
 		ofs<<"Pi=[";
 		uint32_t i=0;
+		
 		for(auto it=Pi.begin();it!=Pi.end();i++,it++)
 		{
 			ofs<<'{';
@@ -1077,7 +1079,9 @@ MeasureAssignmentProblem::OutPutCplexDat_rout(const string&outdir,const string&i
 			if(i<Pi.size()-2)
 				ofs<<',';
 		}
+		
 		ofs<<"];"<<endl;
+		
 		/**************************************/
 		uint64_t sum=0;
 		ofs<<"weight=[";
@@ -1107,6 +1111,7 @@ MeasureAssignmentProblem::OutPutCplexDat_rout(const string&outdir,const string&i
 		ofs<<"];"<<endl;
 		cout<<sum<<endl;
 		/**************************************/
+		
 		ofs<<"weight_real=[";
 		i=0;
 		sum=0;
@@ -1119,6 +1124,7 @@ MeasureAssignmentProblem::OutPutCplexDat_rout(const string&outdir,const string&i
 		}
 		ofs<<"];"<<endl;
 		cout<<sum<<endl;
+	
 
 
 		/***************************************/
@@ -1165,6 +1171,7 @@ MeasureAssignmentProblem::OutPutCplexDat_rout(const string&outdir,const string&i
 		}
 		linkpaths_day.push_back(linkpaths);
 		delt_day.push_back(delt);
+		
 		ofs<<"d=[";
 		for(uint32_t i=0;i<delt.size();i++)
 		{
@@ -1191,6 +1198,7 @@ MeasureAssignmentProblem::OutPutCplexDat_rout(const string&outdir,const string&i
 		ofs<<"];"<<endl;
 
 			ofs.close();
+			
 		}
 
 
