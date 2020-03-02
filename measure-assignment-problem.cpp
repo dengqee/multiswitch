@@ -910,7 +910,7 @@ MeasureAssignmentProblem::OutPutCplexDat_rout(const string&outdir,const string&i
 		ifs.close();
 		flowsval_day_real.push_back(flowsval_real);
 
-		filename=indir+"day"+to_string(day)+"/"+to_string(TCAM)"_TCAM.txt";
+		filename=indir+"day"+to_string(day)+"/"+to_string(TCAM)+"_TCAM.txt";
 		ifs.open(filename.c_str());
 		map<uint32_t,uint32_t>tcam;
 		while(getline(ifs,line))
@@ -1062,8 +1062,9 @@ MeasureAssignmentProblem::OutPutCplexDat_rout(const string&outdir,const string&i
 		ofs<<"];"<<endl;
 		/**************************************/
 
-		ofs<<"Pi=[";
 		uint32_t i=0;
+		/*
+		ofs<<"Pi=[";
 		for(auto it=Pi.begin();it!=Pi.end();i++,it++)
 		{
 			ofs<<'{';
@@ -1078,6 +1079,7 @@ MeasureAssignmentProblem::OutPutCplexDat_rout(const string&outdir,const string&i
 				ofs<<',';
 		}
 		ofs<<"];"<<endl;
+		*/
 		/**************************************/
 		uint64_t sum=0;
 		ofs<<"weight=[";
@@ -1170,9 +1172,10 @@ MeasureAssignmentProblem::OutPutCplexDat_rout(const string&outdir,const string&i
 		{
 			if(i!=0)
 				ofs<<"   ";
-			ofs<<'[';
+			ofs<<'{';
 			for(uint32_t p=0;p<delt[i].size();p++)
 			{
+				ofs<<'<'<<p<<",";
 				ofs<<'[';
 				for(uint32_t e=0;e<delt[i][p].size();e++)
 				{
@@ -1180,11 +1183,11 @@ MeasureAssignmentProblem::OutPutCplexDat_rout(const string&outdir,const string&i
 					if(e<delt[i][p].size()-1)
 						ofs<<',';
 				}
-				ofs<<']';
+				ofs<<"]>";
 				if(p<delt[i].size()-1)
 					ofs<<',';
 			}
-			ofs<<']';
+			ofs<<'}';
 			if(i<delt.size()-1)
 				ofs<<','<<endl;
 		}
