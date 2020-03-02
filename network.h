@@ -17,9 +17,9 @@
 
 using namespace std;
 //链路容量，单位为包
-#define OC192 9953280 
-#define OC48 39813120
-#define OC24 2488320
+#define OC192 500000 
+#define OC48 100000
+#define OC24 50000
 #define PACKET_SIZE 1500//packet大小，字节
 
 class Flow

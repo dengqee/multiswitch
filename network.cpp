@@ -185,9 +185,9 @@ Network::CalLinkCapcity()
 		node2=m_topo->m_links[i].second;
 		degree1=m_topo->GetDegree(node1,t);
 		degree2=m_topo->GetDegree(node2,t);
-		if(degree1>3&&degree2>3)
+		if(degree1>5&&degree2>5)
 			m_linkCap.push_back(OC192);
-		else if(degree1<=3&&degree2<=3)
+		else if(degree1<=5&&degree2<=5)
 			m_linkCap.push_back(OC24);
 		else
 			m_linkCap.push_back(OC48);

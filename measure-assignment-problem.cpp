@@ -691,7 +691,7 @@ MeasureAssignmentProblem::OutPutPacketOnMeasureNode(const string &packetFile,con
 	istringstream lineBuffer;
 	string line;
 	set<uint32_t>fs1,fs2;
-	int sum=0;
+	int sum1=0,sum2=0;
 	while(getline(ifs,line))
 	{
 		lineBuffer.clear();
@@ -714,17 +714,18 @@ MeasureAssignmentProblem::OutPutPacketOnMeasureNode(const string &packetFile,con
 				*ofss[v]<<line<<endl;
 //				fs2.insert(s*100000+t*1000+num);
 				flag=true;
+				sum1++;
 			}
 		}
-		//if(!flag)
-		//{
+		if(!flag)
+		{
 		//	fs2.insert(s*100000+t*1000+num);
-		//	sum++;
+			sum2++;
 
-		//}
+		}
 
 	}
-	cout<<fs2.size()<<" "<<sum<<endl;//输出的是未写入的流
+	cout<<sum1<<" "<<sum2<<endl;//输出的是未写入的流
 	for(int v=0;v<m_network->m_measureNodeNum;v++)
 	{
 		ofss[v]->close();
@@ -811,7 +812,7 @@ MeasureAssignmentProblem::OutPutPacketOnMeasureNode_ran(const string &packetFile
 	istringstream lineBuffer;
 	string line;
 	set<uint32_t>fs1,fs2;
-	int sum=0;
+	int sum1=0,sum2=0;
 	while(getline(ifs,line))
 	{
 		lineBuffer.str(line);
@@ -846,18 +847,19 @@ MeasureAssignmentProblem::OutPutPacketOnMeasureNode_ran(const string &packetFile
 				*ofss[v]<<line<<endl;
 			//	fs2.insert(s*100000+t*1000+num);
 				flag=true;
+				sum1++;
 				break;
 			}
 		}
 		if(!flag)
 		{
 			fs2.insert(s*100000+t*1000+num);
-			sum++;
+			sum2++;
 
 		}
 
 	}
-	cout<<fs2.size()<<" "<<sum<<endl;
+	cout<<sum1<<" "<<sum2<<endl;
 	for(int v=0;v<m_network->m_measureNodeNum;v++)
 	{
 		ofss[v]->close();
@@ -1062,7 +1064,7 @@ MeasureAssignmentProblem::OutPutCplexDat_rout(const string&outdir,const string&i
 		}
 		ofs<<"];"<<endl;
 		/**************************************/
-
+/*
 		ofs<<"Pi=[";
 		uint32_t i=0;
 		
@@ -1081,7 +1083,7 @@ MeasureAssignmentProblem::OutPutCplexDat_rout(const string&outdir,const string&i
 		}
 		
 		ofs<<"];"<<endl;
-		
+*/		
 		/**************************************/
 		uint64_t sum=0;
 		ofs<<"weight=[";
@@ -1113,7 +1115,7 @@ MeasureAssignmentProblem::OutPutCplexDat_rout(const string&outdir,const string&i
 		/**************************************/
 		
 		ofs<<"weight_real=[";
-		i=0;
+		uint32_t i=0;
 		sum=0;
 		for(auto it=allflow_day_real[day].begin();it!=allflow_day_real[day].end();i++,it++)
 		{
@@ -1149,6 +1151,8 @@ MeasureAssignmentProblem::OutPutCplexDat_rout(const string&outdir,const string&i
 		map<uint32_t,vector<vector<uint32_t> > >linkpaths;//链路路径，路径保存的是链路的编号
 		for(auto it=paths.begin();it!=paths.end();i++,it++)
 		{
+			delt[i].clear();
+			delt[i]=vector<vector<uint32_t> >(it->second.size(),vector<uint32_t>(m_network->m_topo->m_linkNum,0));
 			for(uint32_t p=0;p<it->second.size();p++)
 			{
 				vector<uint32_t>path=it->second[p];
@@ -1177,9 +1181,10 @@ MeasureAssignmentProblem::OutPutCplexDat_rout(const string&outdir,const string&i
 		{
 			if(i!=0)
 				ofs<<"   ";
-			ofs<<'[';
+			ofs<<'{';
 			for(uint32_t p=0;p<delt[i].size();p++)
 			{
+				ofs<<'<'<<p<<",";
 				ofs<<'[';
 				for(uint32_t e=0;e<delt[i][p].size();e++)
 				{
@@ -1187,11 +1192,11 @@ MeasureAssignmentProblem::OutPutCplexDat_rout(const string&outdir,const string&i
 					if(e<delt[i][p].size()-1)
 						ofs<<',';
 				}
-				ofs<<']';
+				ofs<<"]>";
 				if(p<delt[i].size()-1)
 					ofs<<',';
 			}
-			ofs<<']';
+			ofs<<'}';
 			if(i<delt.size()-1)
 				ofs<<','<<endl;
 		}
