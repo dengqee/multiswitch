@@ -715,6 +715,7 @@ MeasureAssignmentProblem::OutPutPacketOnMeasureNode(const string &packetFile,con
 //				fs2.insert(s*100000+t*1000+num);
 				flag=true;
 				sum1++;
+				break;
 			}
 		}
 		if(!flag)

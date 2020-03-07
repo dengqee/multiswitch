@@ -58,7 +58,7 @@ int main()
 
 	//输出路由规划需要的dat文件
 	string outdir="./cplex/problem3/problem4_dat/";
-	string indir="./data/BA50_days/est/"; 
+	string indir="./data/BA50_days/"+to_string(measureNodeNum)+"/est/"; 
 	vector<map<uint32_t,uint32_t> >allflow_day;//每天的测量流量矩阵,累加
 	vector<map<uint32_t,uint32_t> >allflow_day_real;//每天真实流量矩阵，累加
 	vector<map<uint32_t,uint32_t> >tcam_day;//每天TCAM中记录的流

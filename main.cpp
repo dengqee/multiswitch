@@ -67,7 +67,7 @@ int main()
 	}
 	string resCplex="./cplex/problem3/Nmax_phy_load_x.txt";
 	assign.ReadCplexResult(resCplex);
-	string packetFile="./data/Geant_126388_packets_new.txt";
+	string packetFile;
 
 	//dir="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/nodechange/22/packets_original/";//original
 	//assign.OutPutPacketOnMeasureNode_ori(packetFile,dir);
@@ -81,7 +81,7 @@ int main()
 	for(int day=1;day<=10;day++)
 	{
 		packetFile="./data/BA50_days/packets_day"+to_string(day)+".txt";
-		dir="./data/BA50_days/day"+to_string(day)+"/";
+		dir="./data/BA50_days/"+to_string(measureNodeNum)+"/day"+to_string(day)+"/";
 		string md="mkdir -p "+dir;
 		system(md.c_str());
 
