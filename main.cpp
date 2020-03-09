@@ -19,7 +19,7 @@ int main()
 	string topoName="Geant";
 	string topoFileName=dir+"Topology_"+topoName+".txt";
 
-	string flowFileName=dir+topoName+"flow_126388.txt"; 
+	string flowFileName=dir+topoName+"flow.txt"; 
 
 	string pathFileName=dir+topoName+"Path.txt";
 
@@ -35,6 +35,8 @@ int main()
 	plasementProblem.run();
 	plasementProblem.Print();
 	string measureNodeFile="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/packet/"+to_string(measureNodeNum)+"/measureNode.txt";
+	string md="mkdir -p /home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/packet/"+to_string(measureNodeNum)+"/";
+	system(md.c_str());
 	plasementProblem.OutPut(measureNodeFile);//输出测量节点
 
 	//设置代价函数
@@ -67,7 +69,7 @@ int main()
 	}
 	string resCplex="./cplex/problem3/Nmax_phy_load_x.txt";
 	assign.ReadCplexResult(resCplex);
-	string packetFile="./data/Geant_126388_packets_new.txt";
+	string packetFile="./data/Geant_packets.txt";
 
 	//dir="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/nodechange/22/packets_original/";//original
 	//assign.OutPutPacketOnMeasureNode_ori(packetFile,dir);
@@ -76,12 +78,14 @@ int main()
 	
 	
 	//dir="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/packet/"+to_string(measureNodeNum)+"/packets_balanced/";//无容量约束的完全负载均衡
-	dir="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/packet/"+to_string(measureNodeNum)+"/packets_subbalanced/1/";//有容量约束的负载均衡
-	assign.OutPutPacketOnMeasureNode(packetFile,dir);//输出经过负载均衡的测量分配方案
+	//dir="/home/dengqi/eclipse-workspace/ElasticSketchCode/data/multiswitch/packet/"+to_string(measureNodeNum)+"/packets_subbalanced/1/";//有容量约束的负载均衡
+	//assign.OutPutPacketOnMeasureNode(packetFile,dir);//输出经过负载均衡的测量分配方案
 	for(int day=1;day<=10;day++)
 	{
 		packetFile="./data/GEANT_days/packets_day"+to_string(day)+".txt";
-		dir="./data/GEANT_days/day"+to_string(day)+"/";
+		dir="./data/GEANT_days/"+to_string(measureNodeNum)+"/day"+to_string(day)+"/";
+		string md="mkdir -p "+dir;
+		system(md.c_str());
 		assign.OutPutPacketOnMeasureNode(packetFile,dir);//输出经过负载均衡的测量分配方案
 	
 	}

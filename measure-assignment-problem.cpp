@@ -691,9 +691,10 @@ MeasureAssignmentProblem::OutPutPacketOnMeasureNode(const string &packetFile,con
 	istringstream lineBuffer;
 	string line;
 	set<uint32_t>fs1,fs2;
-	int sum=0;
+	int sum1=0,sum2=0;
 	while(getline(ifs,line))
 	{
+		lineBuffer.clear();
 		lineBuffer.str(line);
 		uint32_t s,t,num,flowID;
 		lineBuffer>>s>>t>>num;
@@ -713,17 +714,19 @@ MeasureAssignmentProblem::OutPutPacketOnMeasureNode(const string &packetFile,con
 				*ofss[v]<<line<<endl;
 //				fs2.insert(s*100000+t*1000+num);
 				flag=true;
+				sum1++;
+				break;
 			}
 		}
-		//if(!flag)
-		//{
-		//	fs2.insert(s*100000+t*1000+num);
-		//	sum++;
+		if(!flag)
+		{
+			fs2.insert(s*100000+t*1000+num);
+			sum2++;
 
-		//}
+		}
 
 	}
-	cout<<fs2.size()<<" "<<sum<<endl;//输出的是未写入的流
+	cout<<sum1<<" "<<sum2<<endl;//输出的是未写入的流
 	for(int v=0;v<m_network->m_measureNodeNum;v++)
 	{
 		ofss[v]->close();
@@ -754,6 +757,7 @@ MeasureAssignmentProblem::OutPutPacketOnMeasureNode_ori(const string &packetFile
 	int sum=0;
 	while(getline(ifs,line))
 	{
+		lineBuffer.clear();
 		lineBuffer.str(line);
 		uint32_t s,t,num,flowID;
 		lineBuffer>>s>>t>>num;
@@ -813,6 +817,7 @@ MeasureAssignmentProblem::OutPutPacketOnMeasureNode_ran(const string &packetFile
 	int sum=0;
 	while(getline(ifs,line))
 	{
+		lineBuffer.clear();
 		lineBuffer.str(line);
 		uint32_t s,t,num,flowID;
 		lineBuffer>>s>>t>>num;
@@ -1145,6 +1150,8 @@ MeasureAssignmentProblem::OutPutCplexDat_rout(const string&outdir,const string&i
 		map<uint32_t,vector<vector<uint32_t> > >linkpaths;//链路路径，路径保存的是链路的编号
 		for(auto it=paths.begin();it!=paths.end();i++,it++)
 		{
+			delt[i].clear();
+			delt[i]=vector<vector<uint32_t> >(it->second.size(),vector<uint32_t>(m_network->m_topo->m_linkNum,0));
 			for(uint32_t p=0;p<it->second.size();p++)
 			{
 				vector<uint32_t>path=it->second[p];

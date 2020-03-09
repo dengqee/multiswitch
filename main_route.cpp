@@ -19,7 +19,7 @@ int main()
 	string topoName="Geant";
 	string topoFileName=dir+"Topology_"+topoName+".txt";
 
-	string flowFileName=dir+topoName+"flow_126388.txt"; 
+	string flowFileName=dir+topoName+"flow.txt"; 
 
 	string pathFileName=dir+topoName+"Path.txt";
 
@@ -58,7 +58,7 @@ int main()
 
 	//输出路由规划需要的dat文件
 	string outdir="./cplex/problem3/problem4_dat/";
-	string indir="./data/GEANT_days/est/";
+	string indir="./data/GEANT_days/"+to_string(measureNodeNum)+"/est/";
 	vector<map<uint32_t,uint32_t> >allflow_day;//每天的测量流量矩阵,累加
 	vector<map<uint32_t,uint32_t> >allflow_day_real;//每天真实流量矩阵，累加
 	vector<map<uint32_t,uint32_t> >tcam_day;//每天TCAM中记录的流
