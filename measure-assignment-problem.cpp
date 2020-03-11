@@ -1349,12 +1349,27 @@ MeasureAssignmentProblem::Greedy_route(//贪心算法
 				{
 					break;
 				}
+				minlen=path_link_rest[choose[0]].size();
+				for(uint32_t p:choose)//update minlen
+				{
+					if(minlen>path_link_rest[p].size())
+					{
+						minlen=path_link_rest[p].size();
+					}
+				}
 				can_choose=choose;
 			}
 			uint32_t xip;
 			if(choose.size()>1)
 			{
-				xip=choose[rand()%choose.size()];
+				for(uint32_t p:choose)//选择最短的
+				{
+					if(path_link_rest[p].size()==minlen)
+					{
+						xip=p;
+						break;
+					}
+				}
 			}
 			else
 			{
