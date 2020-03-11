@@ -1027,6 +1027,10 @@ MeasureAssignmentProblem::OutPutCplexDat_rout(const string&outdir,const string&i
 						else
 						{
 							respath=m_network->m_topo->m_paths[pair<uint32_t,uint32_t>(n,d)];
+							if(respath[1]==node)//loop path
+							{
+								continue;
+							}
 						}
 						path.insert(path.end(),respath.begin(),respath.end());
 						paths[key].push_back(path);
