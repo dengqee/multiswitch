@@ -1027,6 +1027,10 @@ MeasureAssignmentProblem::OutPutCplexDat_rout(const string&outdir,const string&i
 						{
 							respath=m_network->m_topo->m_paths[pair<uint32_t,uint32_t>(n,d)];
 						}
+						if(respath[1]==node)//loop path
+						{
+							continue;
+						}
 						path.insert(path.end(),respath.begin(),respath.end());
 						paths[key].push_back(path);
 					}
@@ -1255,6 +1259,7 @@ MeasureAssignmentProblem::Greedy_route(//贪心算法
 		map<uint32_t,vector<vector<uint32_t> > >postpaths;//大流在测量节点后续的路径
 		vector<uint32_t>load(m_network->m_topo->m_linkNum,0);//每条链路的负载
 		vector<uint32_t>load_real(load);//后一天的真实负载
+		uint64_t heavysum=0;//统计heavy中的总流量
 		for(auto it=Pi.begin();it!=Pi.end();it++)
 		{
 			if(it->second==1)//只有一条路径，更新链路负载和真实链路负载
@@ -1271,6 +1276,7 @@ MeasureAssignmentProblem::Greedy_route(//贪心算法
 				uint32_t measurenode=tcam[it->first];
 				uint32_t src=it->first/100000;
 				heavy.push_back(make_pair(it->first,allflow[it->first]));
+				heavysum+=allflow[it->first];
 				if(src==measurenode)
 				{
 					postpaths[it->first]=linkpaths[it->first];
@@ -1331,7 +1337,7 @@ MeasureAssignmentProblem::Greedy_route(//贪心算法
 			}
 			for(uint32_t l=0;l<minlen;l++)
 			{
-				uint32_t maxrest=0;
+				int maxrest=-5000000;
 				for(uint32_t p:can_choose)
 				{
 					if(maxrest<path_link_rest[p][l])
