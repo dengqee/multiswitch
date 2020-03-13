@@ -1386,12 +1386,213 @@ MeasureAssignmentProblem::Greedy_route(//贪心算法
 		for(uint32_t l:load_real)
 		{
 			ofs<<l<<" ";
-			cout<<l<<" ";
+//			cout<<l<<" ";
 		}
 		ofs<<endl;
-		cout<<endl;
+//		cout<<endl;
 	}
 }
+
+void 
+MeasureAssignmentProblem::Greedy_route2(//第二种贪心算法
+		const string&outdir,//outdir为输出文件目录
+		vector<map<uint32_t,uint32_t> >&allflow_day,//每天的测量流量矩阵,累加
+		vector<map<uint32_t,uint32_t> >&allflow_day_real,//每天真实流量矩阵，累加
+		vector<map<uint32_t,uint32_t> >&tcam_day,//每天TCAM中记录的流
+		vector<map<uint32_t,vector<vector<uint32_t> > > >&linkpaths_day,//每天每条流的可用路径
+		vector<map<uint32_t,uint32_t> >&Pi_day,//每天每条流的备选路径
+		vector<vector<vector<vector<uint32_t> > > >&delt_day//每天的delt
+		)
+{
+	string file=outdir+"greedy2_real_load.txt";
+	ofstream ofs(file.c_str());
+	for(uint32_t day=1;day<10;day++)
+	{
+		//取出每天的数据
+		map<uint32_t,uint32_t>allflow=allflow_day[day-1];
+		if(day>1)
+		{
+			for(auto it=allflow.begin();it!=allflow.end();it++)
+			{
+				it->second=it->second-allflow_day[day-2][it->first];
+			}
+		}
+		map<uint32_t,uint32_t>allflow_real=allflow_day_real[day];//后一天的流，用于计算真实链路负载
+		for(auto it=allflow_real.begin();it!=allflow_real.end();it++)
+		{
+			it->second=it->second-allflow_day_real[day-1][it->first];
+		}
+		map<uint32_t,uint32_t>tcam=tcam_day[day-1];//但前天tcam中的流
+		map<uint32_t,vector<vector<uint32_t> > >linkpaths=linkpaths_day[day-1];//但前天所有流的备选链路路径
+		map<uint32_t,uint32_t>Pi=Pi_day[day-1];//每条流备选路径数
+		vector<vector<vector<uint32_t> > >delt=delt_day[day-1];
+
+
+		//开始贪心算法
+		vector<pair<uint32_t,uint32_t> >heavy;//保存大流
+		map<uint32_t,vector<vector<uint32_t> > >postpaths;//大流在测量节点后续的路径
+		vector<uint32_t>load(m_network->m_topo->m_linkNum,0);//每条链路的负载
+		vector<uint32_t>load_real(load);//后一天的真实负载
+		for(auto it=Pi.begin();it!=Pi.end();it++)
+		{
+			if(it->second==1)//只有一条路径，更新链路负载和真实链路负载
+			{
+				vector<uint32_t>path=linkpaths[it->first][0];
+				for(uint32_t l:path)
+				{
+					load[l]+=allflow[it->first];
+					load_real[l]+=allflow_real[it->first];
+				}
+			}
+			else if(it->second>1)
+			{
+				uint32_t measurenode=tcam[it->first];
+				uint32_t src=it->first/100000;
+				heavy.push_back(make_pair(it->first,allflow[it->first]));
+				if(src==measurenode)
+				{
+					postpaths[it->first]=linkpaths[it->first];
+				}
+				else//更新测量节点前的链路负载，将测量节点后的链路路径保存
+				{
+					vector<uint32_t>path=linkpaths[it->first][0];
+					uint32_t i;//记录第几条链路开始是测量节点
+					for(i=0;i<path.size();i++)
+					{
+						uint32_t link=path[i];
+						if((m_network->m_topo->m_links[link]).first!=measurenode)
+						{
+							load[link]+=allflow[it->first];
+							load_real[link]+=allflow_real[it->first];
+						}
+						else
+						{
+							break;
+						}
+					}
+					for(uint32_t p=0;p<it->second;p++)
+					{
+						vector<uint32_t>path=linkpaths[it->first][p];
+						postpaths[it->first].push_back(vector<uint32_t>(path.begin()+i,path.end()));
+					}
+				}
+			}
+			else
+			{
+				cout<<it->first<<"没有可用路径"<<endl;
+				exit(1);
+			}
+		}
+		sort(heavy.begin(),heavy.end(),cmp);
+		for(auto flow:heavy)
+		{
+			uint32_t key=flow.first;
+			uint32_t minlen=INF;//记录最短长度
+			vector<uint32_t>minpath;//记录最短路径的路径编号
+			vector<vector<int> >path_link_rest;//每条路径的链路空闲,即容量-负载
+			vector<float>paths_ins_cost;//每条路径的链路代价增量之和
+			for(uint32_t p=0;p<postpaths[key].size();p++)
+			{
+				vector<int>link_rest;//链路空闲,即容量-负载
+				float path_ins_cost=0;//路径代价增量之和
+				float link_uti,link_uti_old;//链路利用率
+				float link_cost,link_cost_old;//链路代价
+				for(uint32_t l:postpaths[key][p])
+				{
+					link_rest.push_back(m_network->m_linkCap[l]-load[l]);
+					link_uti_old=1.0*load[l]/m_network->m_linkCap[l];
+					link_uti=1.0*(load[l]+flow.second)/m_network->m_linkCap[l];
+					link_cost_old=m_costFun->Result(link_uti_old);
+					link_cost=m_costFun->Result(link_uti);
+					path_ins_cost+=link_cost-link_cost_old;
+					
+				}
+				sort(link_rest.begin(),link_rest.end());
+				path_link_rest.push_back(link_rest);
+				paths_ins_cost.push_back(path_ins_cost);
+				uint32_t len=postpaths[key][p].size();
+				minlen=minlen>len?len:minlen;
+			}
+			vector<uint32_t>choose,can_choose;//选择的路由集合，备选路由集合
+			//贪心选择路径代价增加最小的
+			float mincost=paths_ins_cost[0];
+			for(uint32_t p=0;p<path_link_rest.size();p++)
+			{
+				if(mincost>paths_ins_cost[p])
+				{
+					can_choose.clear();
+					can_choose.push_back(p);
+				}
+				else if(mincost-paths_ins_cost[p]<1e-8||paths_ins_cost[p]-mincost<1e-8)
+				{
+					can_choose.push_back(p);
+				}
+			}
+			//后续贪心与greedy一样
+			for(uint32_t l=0;l<minlen;l++)
+			{
+				int maxrest=-5000000;
+				for(uint32_t p:can_choose)
+				{
+					if(maxrest<path_link_rest[p][l])
+					{
+						maxrest=path_link_rest[p][l];
+						choose.clear();
+						choose.push_back(p);
+					}
+					else if(maxrest==path_link_rest[p][l])
+					{
+						choose.push_back(p);
+					}
+				}
+				if(choose.size()==1)
+				{
+					break;
+				}
+				minlen=path_link_rest[choose[0]].size();
+				for(uint32_t p:choose)//update minlen
+				{
+					if(minlen>path_link_rest[p].size())
+					{
+						minlen=path_link_rest[p].size();
+					}
+				}
+				can_choose=choose;
+			}
+			uint32_t xip;
+			if(choose.size()>1)
+			{
+				for(uint32_t p:choose)//选择最短的
+				{
+					if(path_link_rest[p].size()==minlen)
+					{
+						xip=p;
+						break;
+					}
+				}
+			}
+			else
+			{
+				xip=choose[0];
+			}
+			//选择完路由后更新链路负载
+			vector<uint32_t>path=linkpaths[key][xip];
+			for(uint32_t l:path)
+			{
+				load[l]+=flow.second;
+				load_real[l]+=allflow_real[key];
+			}
+		}
+		for(uint32_t l:load_real)
+		{
+			ofs<<l<<" ";
+//			cout<<l<<" ";
+		}
+		ofs<<endl;
+//		cout<<endl;
+	}
+}
+
 void 
 MeasureAssignmentProblem::Random_route(//随机算法
 		const string&outdir,//outdir为输出文件目录
@@ -1443,10 +1644,10 @@ MeasureAssignmentProblem::Random_route(//随机算法
 		for(uint32_t l:load_real)
 		{
 			ofs<<l<<" ";
-			cout<<l<<" ";
+//			cout<<l<<" ";
 		}
 		ofs<<endl;
-		cout<<endl;
+//		cout<<endl;
 	}
 }
 void
@@ -1487,9 +1688,9 @@ MeasureAssignmentProblem::Original_route(//原始算法
 		for(uint32_t l:load_real)
 		{
 			ofs<<l<<" ";
-			cout<<l<<" ";
+//			cout<<l<<" ";
 		}
 		ofs<<endl;
-		cout<<endl;
+//		cout<<endl;
 	}
 }

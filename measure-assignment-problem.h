@@ -234,6 +234,15 @@ public:
 			vector<map<uint32_t,uint32_t> >&Pi_day,//每天每条流的备选路径
 			vector<vector<vector<vector<uint32_t> > > >&delt_day//每天的delt
 			);
+	void Greedy_route2(//贪心算法
+			const string&outdir,//outdir为输出文件目录
+			vector<map<uint32_t,uint32_t> >&allflow_day,//每天的测量流量矩阵,累加
+			vector<map<uint32_t,uint32_t> >&allflow_day_real,//每天真实流量矩阵，累加
+			vector<map<uint32_t,uint32_t> >&tcam_day,//每天TCAM中记录的流
+			vector<map<uint32_t,vector<vector<uint32_t> > > >&linkpaths_day,//每天每条流的可用链路路径
+			vector<map<uint32_t,uint32_t> >&Pi_day,//每天每条流的备选路径
+			vector<vector<vector<vector<uint32_t> > > >&delt_day//每天的delt
+			);
 	void Random_route(//随机选路
 			const string&outdir,//outdir为输出文件目录
 			vector<map<uint32_t,uint32_t> >&allflow_day,//每天的测量流量矩阵,累加
