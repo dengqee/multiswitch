@@ -21,7 +21,7 @@ using namespace std;
 #define E 2.718 //自然对数的底数
 
 #define RAND_SEED 1//随机种子
-#define TCAM 500
+#define TCAM 1000
 
 bool cmp(pair<uint32_t,uint32_t>&a,pair<uint32_t,uint32_t>&b);//使得pair按照val大到小排序
 class PiecewiseFunc

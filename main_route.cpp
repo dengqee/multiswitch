@@ -27,7 +27,7 @@ int main()
 	shared_ptr<Network> geant(new Network(topoFileName,flowFileName));
 	geant->GenFlowPath();
 
-	uint32_t measureNodeNum=23;
+	uint32_t measureNodeNum=14;
 	
 
 	//求解放置问题

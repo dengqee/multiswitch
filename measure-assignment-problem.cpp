@@ -1331,7 +1331,7 @@ MeasureAssignmentProblem::Greedy_route(//贪心算法
 			}
 			for(uint32_t l=0;l<minlen;l++)
 			{
-				uint32_t maxrest=0;
+				int maxrest=-5000000;
 				for(uint32_t p:can_choose)
 				{
 					if(maxrest<path_link_rest[p][l])
