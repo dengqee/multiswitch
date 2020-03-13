@@ -1393,10 +1393,10 @@ MeasureAssignmentProblem::Greedy_route(//贪心算法
 		for(uint32_t l:load_real)
 		{
 			ofs<<l<<" ";
-			cout<<l<<" ";
+			//cout<<l<<" ";
 		}
 		ofs<<endl;
-		cout<<endl;
+		//cout<<endl;
 	}
 }
 void 
@@ -1450,10 +1450,10 @@ MeasureAssignmentProblem::Random_route(//随机算法
 		for(uint32_t l:load_real)
 		{
 			ofs<<l<<" ";
-			cout<<l<<" ";
+//			cout<<l<<" ";
 		}
 		ofs<<endl;
-		cout<<endl;
+//		cout<<endl;
 	}
 }
 void
@@ -1494,9 +1494,9 @@ MeasureAssignmentProblem::Original_route(//原始算法
 		for(uint32_t l:load_real)
 		{
 			ofs<<l<<" ";
-			cout<<l<<" ";
+//			cout<<l<<" ";
 		}
 		ofs<<endl;
-		cout<<endl;
+//		cout<<endl;
 	}
 }
