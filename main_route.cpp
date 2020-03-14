@@ -27,7 +27,7 @@ int main()
 	shared_ptr<Network> geant(new Network(topoFileName,flowFileName));
 	geant->GenFlowPath();
 
-	uint32_t measureNodeNum=13;
+	uint32_t measureNodeNum=23;
 	
 
 	//求解放置问题
@@ -69,7 +69,7 @@ int main()
 	assign.OutPutCplexDat_rout(outdir,indir,allflow_day,allflow_day_real,tcam_day,linkpaths_day,Pi_day,delt_day);
 	assign.Greedy_route(outdir,allflow_day,allflow_day_real,tcam_day,linkpaths_day,Pi_day,delt_day);
 	assign.Greedy_route2(outdir,allflow_day,allflow_day_real,tcam_day,linkpaths_day,Pi_day,delt_day);
-	assign.Random_route(outdir,allflow_day,allflow_day_real,tcam_day,linkpaths_day,Pi_day,delt_day);
+//	assign.Random_route(outdir,allflow_day,allflow_day_real,tcam_day,linkpaths_day,Pi_day,delt_day);
 	assign.Original_route(outdir,allflow_day,allflow_day_real,tcam_day,linkpaths_day,Pi_day,delt_day);
 	
 

@@ -911,6 +911,8 @@ MeasureAssignmentProblem::OutPutCplexDat_rout(const string&outdir,const string&i
 			uint32_t key,val;
 			lineBuffer>>key>>val;
 			flowsval_real[key]=val;
+			if(key==2221282)
+				cout<<"";
 		}
 		ifs.close();
 		flowsval_day_real.push_back(flowsval_real);
@@ -1127,6 +1129,8 @@ MeasureAssignmentProblem::OutPutCplexDat_rout(const string&outdir,const string&i
 			sum+=it->second-allflow_day_real[day-1][it->first];
 			if(i<allflow_day[day].size()-1)
 				ofs<<',';
+			if(it->first==2221281)
+				cout<<" ";
 		}
 		ofs<<"];"<<endl;
 		cout<<sum<<endl;
@@ -1490,7 +1494,7 @@ MeasureAssignmentProblem::Greedy_route2(//第二种贪心算法
 			uint32_t minlen=INF;//记录最短长度
 			vector<uint32_t>minpath;//记录最短路径的路径编号
 			vector<vector<int> >path_link_rest;//每条路径的链路空闲,即容量-负载
-			vector<float>paths_ins_cost;//每条路径的链路代价增量之和
+			vector<float>paths_ins_cost;//每条路径的链路代价和
 			for(uint32_t p=0;p<postpaths[key].size();p++)
 			{
 				vector<int>link_rest;//链路空闲,即容量-负载
@@ -1520,6 +1524,7 @@ MeasureAssignmentProblem::Greedy_route2(//第二种贪心算法
 			{
 				if(mincost>paths_ins_cost[p])
 				{
+					mincost=paths_ins_cost[p];
 					can_choose.clear();
 					can_choose.push_back(p);
 				}
