@@ -1699,3 +1699,441 @@ MeasureAssignmentProblem::Original_route(//原始算法
 //		cout<<endl;
 	}
 }
+void
+MeasureAssignmentProblem::LP_node(const string&outdir,const string&indir,//按节点求解LP
+		vector<map<uint32_t,uint32_t> >&allflow_day,//每天的测量流量矩阵,累加
+		vector<map<uint32_t,uint32_t> >&allflow_day_real,//每天真实流量矩阵，累加
+		vector<map<uint32_t,uint32_t> >&tcam_day,//每天TCAM中记录的流
+		vector<map<uint32_t,vector<vector<uint32_t> > > >&linkpaths_day,//每天每条流的可用链路路径
+		vector<map<uint32_t,uint32_t> >&Pi_day,//每天每条流的备选路径
+		vector<vector<vector<vector<uint32_t> > > >&delt_day//每天的delt
+		)
+{
+
+	vector<map<uint32_t,uint32_t> >flowsval_day,flowsval_day_real;//保存每天测量值
+	for(int day=1;day<=10;day++)
+	{
+		//统计测量值流量矩阵
+		string filename=indir+"day"+to_string(day)+"/"+to_string(TCAM)+"_1_est.txt";
+		ifstream ifs(filename.c_str());
+		map<uint32_t,uint32_t>flowsval;
+		string line;
+		stringstream lineBuffer;
+		while(getline(ifs,line))
+		{
+			lineBuffer.clear();
+			lineBuffer.str(line);
+			uint32_t key,val;
+			lineBuffer>>key>>val;
+			flowsval[key]=val;
+		}
+		ifs.close();
+		flowsval_day.push_back(flowsval);
+		//统计真实流量矩阵
+		filename=indir+"day"+to_string(day)+"/real.txt";
+		ifs.open(filename.c_str());
+		map<uint32_t,uint32_t>flowsval_real;
+		while(getline(ifs,line))
+		{
+			lineBuffer.clear();
+			lineBuffer.str(line);
+			uint32_t key,val;
+			lineBuffer>>key>>val;
+			flowsval_real[key]=val;
+		}
+		ifs.close();
+		flowsval_day_real.push_back(flowsval_real);
+
+		filename=indir+"day"+to_string(day)+"/"+to_string(TCAM)+"_TCAM.txt";
+		ifs.open(filename.c_str());
+		map<uint32_t,uint32_t>tcam;
+		while(getline(ifs,line))
+		{
+			lineBuffer.clear();
+			lineBuffer.str(line);
+			uint32_t key,node;
+			lineBuffer>>key>>node;
+			tcam[key]=node;
+		}
+		tcam_day.push_back(tcam);
+		ifs.close();
+
+	}
+	//vector<map<uint32_t,uint32_t> >allflow_day,allflow_day_real;//每天的流量矩阵,累加
+	map<uint32_t,uint32_t>tmp;//记录所有流的key
+	for(auto it=flowsval_day[9].begin();it!=flowsval_day[9].end();it++)
+	{
+		tmp[it->first]=0;
+	}
+	for(uint32_t day=1;day<=10;day++)
+	{
+		allflow_day.push_back(tmp);
+		for(auto it=flowsval_day[day-1].begin();it!=flowsval_day[day-1].end();it++)
+		{
+			allflow_day[day-1][it->first]=it->second;
+
+		}
+		//真实流量
+		allflow_day_real.push_back(tmp);
+		for(auto it=flowsval_day_real[day-1].begin();it!=flowsval_day_real[day-1].end();it++)
+		{
+			allflow_day_real[day-1][it->first]=it->second;
+
+		}
+	}
+	for(int day=1;day<10;day++)
+	{
+		string fileName=outdir+"lp_node_day"+to_string(day)+".dat";
+		ofstream ofs(fileName.c_str());
+		string fileName2=outdir+"load_node_day"+to_string(day)+".dat";
+		ofstream ofs2(fileName2);
+
+		ofs<<"E="<<m_network->m_topo->m_linkNum<<";"<<endl;//链路数量
+		ofs<<"F="<<m_network->m_fineFlowNum<<';'<<endl;//细流总数
+		/*****************************************************************************************/	
+		map<uint32_t,uint32_t>tcam=tcam_day[day-1];//tcam中的流
+		uint32_t P=0;//最大可用路径数
+		map<uint32_t,uint32_t>Pi;//流i有几条可用路径
+		map<uint32_t,vector<vector<uint32_t> > >paths;//每条流的可用路径
+		for(auto it=tmp.begin();it!=tmp.end();it++)
+		{
+			uint32_t key=it->first;
+			uint32_t s=key/100000;
+			uint32_t d=key%100000/1000;
+			if(tcam.find(key)!=tcam.end())//如果是大流
+			{
+				if(tcam[key]==s)//如果测量节点就是源节点
+				{
+					vector<uint32_t>path,neighbor;
+					neighbor=m_network->m_topo->m_nodes[s];//邻居
+					paths[key].push_back(m_network->m_topo->m_paths[pair<uint32_t,uint32_t>(s,d)]);//默认路由放第一个
+					for(uint32_t node:neighbor)
+					{
+						if(node==paths[key][0][1])
+							continue;
+						path.clear();
+						if(node==d)
+						{
+							path.push_back(d);
+						}
+						else
+						{
+							pair<uint32_t,uint32_t>nodepair(node,d);
+							path=m_network->m_topo->m_paths[nodepair];
+						}
+						if(path.size()>1&&path[1]==s)
+							continue;
+						path.insert(path.begin(),s);
+						paths[key].push_back(path);
+					}
+				}
+				else if(tcam[key]==d)//测量节点是目的节点
+				{
+					paths[key].push_back(m_network->m_topo->m_paths[pair<uint32_t,uint32_t>(s,d)]);
+				}
+				else  //测量节点不是源节点,且不是目的节点
+				{
+					uint32_t node=tcam[key];//测量节点
+					vector<uint32_t>path,neighbor;
+					paths[key].push_back(m_network->m_topo->m_paths[pair<uint32_t,uint32_t>(s,d)]);//默认路由放第一个
+					uint32_t nextnode;//默认路由中下一个节点
+					for(int i=0;i<paths[key][0].size();i++)
+					{
+						if(paths[key][0][i]==node)
+						{
+							nextnode=paths[key][0][i+1];
+							break;
+						}
+					}
+					neighbor=m_network->m_topo->m_nodes[node];//邻居
+					path=m_network->m_topo->m_paths[pair<uint32_t,uint32_t>(s,node)];
+					for(uint32_t n:neighbor)
+					{
+						vector<uint32_t>respath;
+						if(n==nextnode||n==path[path.size()-2])
+							continue;
+						if(n==d)
+						{
+							respath.push_back(d);
+						}
+						else
+						{
+							respath=m_network->m_topo->m_paths[pair<uint32_t,uint32_t>(n,d)];
+							if(respath[1]==node)//loop path
+							{
+								continue;
+							}
+						}
+						path.insert(path.end(),respath.begin(),respath.end());
+						paths[key].push_back(path);
+					}
+				}
+			}
+			else//如果是小流，只有一条备选路径
+			{
+				paths[key].push_back(m_network->m_topo->m_paths[pair<uint32_t,uint32_t>(s,d)]);
+			}
+			Pi[key]=paths[key].size();
+			if(P<Pi[key])
+				P=Pi[key];
+
+		}
+		//linkpaths_day.push_back(paths);
+		Pi_day.push_back(Pi);//输出
+		/****************************************************************************/
+		ofs<<"P="<<P<<';'<<endl;//最大备选路径数
+		ofs<<"M="<<m_A.size()<<';'<<endl;//分段函数段数
+		ofs<<"A=[";
+		for(size_t i=0;i<m_A.size();i++)
+		{
+			ofs<<m_A[i];
+			if(i<m_A.size()-1)
+				ofs<<',';
+		}
+		ofs<<"];"<<endl;
+
+		ofs<<"B=[";
+		for(size_t i=0;i<m_B.size();i++)
+		{
+			ofs<<-m_B[i];
+			if(i<m_B.size()-1)
+				ofs<<',';
+		}
+		ofs<<"];"<<endl;
+		/**************************************/
+		/*
+		   ofs<<"Pi=[";
+		   uint32_t i=0;
+
+		   for(auto it=Pi.begin();it!=Pi.end();i++,it++)
+		   {
+		   ofs<<'{';
+		   for(int p=0;p<it->second;p++)
+		   {
+		   ofs<<p;
+		   if(p<it->second - 1)
+		   ofs<<',';
+		   }
+		   ofs<<'}';
+		   if(i<Pi.size()-2)
+		   ofs<<',';
+		   }
+
+		   ofs<<"];"<<endl;
+		   */		
+		/**************************************/
+		uint64_t sum=0;
+		ofs<<"weight=[";
+		if(day==1)
+		{
+			int i=0;
+			for(auto it=allflow_day[day-1].begin();it!=allflow_day[day-1].end();i++,it++)
+			{
+				ofs<<it->second;//day为时，换算成每秒的速率
+				sum+=it->second;
+				if(i<allflow_day[day-1].size()-1)
+					ofs<<',';
+			}
+		}
+		else
+		{
+			int i=0;
+			for(auto it=allflow_day[day-1].begin();it!=allflow_day[day-1].end();i++,it++)
+			{
+				ofs<<(it->second-allflow_day[day-2][it->first]);//day为时，换算成每秒的速率
+				sum+=it->second-allflow_day[day-2][it->first];
+				if(i<allflow_day[day-1].size()-1)
+					ofs<<',';
+			}
+
+		}
+		ofs<<"];"<<endl;
+		cout<<sum<<endl;
+		/**************************************/
+
+		ofs<<"weight_real=[";
+		uint32_t i=0;
+		sum=0;
+		for(auto it=allflow_day_real[day].begin();it!=allflow_day_real[day].end();i++,it++)
+		{
+			ofs<<(it->second-allflow_day_real[day-1][it->first]);//day为时，换算成每秒的速率
+			sum+=it->second-allflow_day_real[day-1][it->first];
+			if(i<allflow_day[day].size()-1)
+				ofs<<',';
+		}
+		ofs<<"];"<<endl;
+		cout<<sum<<endl;
+
+
+
+		/***************************************/
+		ofs<<"C=[";
+		for(size_t e=0;e<m_network->m_linkCap.size();e++)
+		{
+			ofs<<m_network->m_linkCap[e];
+			if(e<m_network->m_linkCap.size()-1)
+				ofs<<',';
+		}
+		ofs<<"];"<<endl;
+		/****************************************************/
+		vector<vector<vector<uint32_t> > >delt;
+		for(int i=0;i<m_network->m_fineFlowNum;i++)
+		{
+			vector<vector<uint32_t> >t(P,vector<uint32_t>(m_network->m_topo->m_linkNum,0));
+			delt.push_back(t);
+
+		}
+		i=0;
+		vector<pair<uint32_t,uint32_t> >links=m_network->m_topo->m_links;
+		map<uint32_t,vector<vector<uint32_t> > >linkpaths;//链路路径，路径保存的是链路的编号
+		for(auto it=paths.begin();it!=paths.end();i++,it++)
+		{
+			delt[i].clear();
+			delt[i]=vector<vector<uint32_t> >(it->second.size(),vector<uint32_t>(m_network->m_topo->m_linkNum,0));
+			for(uint32_t p=0;p<it->second.size();p++)
+			{
+				vector<uint32_t>path=it->second[p];
+				vector<uint32_t>linkpath;
+
+				for(uint32_t n=0;n<path.size()-1;n++)
+				{
+					for(uint32_t e=0;e<links.size();e++)
+					{
+						if(path[n]==links[e].first&&path[n+1]==links[e].second)
+						{
+							delt[i][p][e]=1;
+							linkpath.push_back(e);
+							break;
+						}
+					}
+				}
+				linkpaths[it->first].push_back(linkpath);
+			}
+		}
+		linkpaths_day.push_back(linkpaths);
+		delt_day.push_back(delt);
+
+		ofs<<"d=[";
+		for(uint32_t i=0;i<delt.size();i++)
+		{
+			if(i!=0)
+				ofs<<"   ";
+			ofs<<'{';
+			for(uint32_t p=0;p<delt[i].size();p++)
+			{
+				ofs<<'<'<<p<<",";
+				ofs<<'[';
+				for(uint32_t e=0;e<delt[i][p].size();e++)
+				{
+					ofs<<delt[i][p][e];
+					if(e<delt[i][p].size()-1)
+						ofs<<',';
+				}
+				ofs<<"]>";
+				if(p<delt[i].size()-1)
+					ofs<<',';
+			}
+			ofs<<'}';
+			if(i<delt.size()-1)
+				ofs<<','<<endl;
+		}
+		ofs<<"];"<<endl;
+
+
+		/****************测量节点上的流**********************/
+		map<uint32_t,uint32_t>allflow=allflow_day[day-1];
+		if(day>1)
+		{
+			for(auto it=allflow.begin();it!=allflow.end();it++)
+			{
+				it->second=it->second-allflow_day[day-2][it->first];
+			}
+		}
+		map<uint32_t,uint32_t>allflow_real=allflow_day_real[day];//后一天的流，用于计算真实链路负载
+		for(auto it=allflow_real.begin();it!=allflow_real.end();it++)
+		{
+			it->second=it->second-allflow_day_real[day-1][it->first];
+		}
+		vector<uint32_t>load(m_network->m_topo->m_linkNum,0);//每条链路的负载
+		vector<uint32_t>load_real(load);//后一天的真实负载
+		map<uint32_t,vector<uint32_t> > node_flow;//保存测量节点和他上面的大流编号和它的值
+		map<uint32_t,uint32_t>node_sum;//节点上的流量之和
+
+		i=0;
+		for(auto it=Pi.begin();it!=Pi.end();it++,i++)
+		{
+			if(it->second==1)
+			{
+				vector<uint32_t>path=linkpaths[it->first][0];
+				for(auto e:path)
+				{
+					load[e]+=allflow[it->first];
+					load_real[e]+=allflow_real[it->first];
+				}
+
+			}
+			else
+			{
+				uint32_t node=tcam[it->first];
+				node_flow[node].push_back(i);
+				node_sum[node]+=allflow[it->first];
+			}
+		}
+		vector<uint32_t>node_sort;//按node_sum排序
+		vector<pair<uint32_t,uint32_t> >node_sum_vec;
+		for(auto it=node_sum.begin();it!=node_sum.end();it++)
+		{
+			node_sum_vec.push_back(make_pair(it->first,it->second));
+		}
+		sort(node_sum_vec.begin(),node_sum_vec.end(),cmp);
+		/************************/
+		ofs2<<"load_old=[";
+		for(size_t i=0;i<load.size();i++)
+		{
+			ofs2<<load[i];
+			if(i<load.size()-1)
+			{
+				ofs2<<",";
+			}
+		}
+		ofs2<<"];"<<endl;
+		ofs2<<"load_old_real=[";
+		for(size_t i=0;i<load_real.size();i++)
+		{
+			ofs2<<load_real[i];
+			if(i<load_real.size()-1)
+			{
+				ofs2<<",";
+			}
+		}
+		ofs2<<"];"<<endl;
+		/***********************/
+		ofs<<"NODE="<<node_sum.size()<<";"<<endl;//测量节点数
+		ofs<<"flows_node=[";
+		for(size_t i=0;i<node_sum_vec.size();i++)
+		{
+			ofs<<"{";
+			uint32_t node=node_sum_vec[i].first;
+			for(size_t f=0;f<node_flow[node].size();f++)
+			{
+				ofs<<node_flow[node][f];
+				if(f<node_flow[node].size()-1)
+				{
+					ofs<<",";
+				}
+			}
+			ofs<<"}";
+			if(i<node_sum_vec.size()-1)
+			{
+				ofs<<","<<endl;
+
+			}
+		}
+		ofs<<"];"<<endl;
+		/****************************/
+		ofs.close();
+		ofs2.close();
+	}
+
+
+}

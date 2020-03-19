@@ -71,6 +71,8 @@ int main()
 	assign.Greedy_route2(outdir,allflow_day,allflow_day_real,tcam_day,linkpaths_day,Pi_day,delt_day);
 //	assign.Random_route(outdir,allflow_day,allflow_day_real,tcam_day,linkpaths_day,Pi_day,delt_day);
 	assign.Original_route(outdir,allflow_day,allflow_day_real,tcam_day,linkpaths_day,Pi_day,delt_day);
+	outdir="./cplex/problem3/lp_node_dat/";
+	assign.LP_node(outdir,indir,allflow_day,allflow_day_real,tcam_day,linkpaths_day,Pi_day,delt_day);
 	
 
 	return 0;
