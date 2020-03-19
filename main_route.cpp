@@ -66,10 +66,13 @@ int main()
 	vector<map<uint32_t,uint32_t> >Pi_day;//每天每条流的备选路径
 	vector<vector<vector<vector<uint32_t> > > >delt_day;//每天的delt
 
-	assign.OutPutCplexDat_rout(outdir,indir,allflow_day,allflow_day_real,tcam_day,linkpaths_day,Pi_day,delt_day);
-	assign.Greedy_route(outdir,allflow_day,allflow_day_real,tcam_day,linkpaths_day,Pi_day,delt_day);
-	assign.Random_route(outdir,allflow_day,allflow_day_real,tcam_day,linkpaths_day,Pi_day,delt_day);
-	assign.Original_route(outdir,allflow_day,allflow_day_real,tcam_day,linkpaths_day,Pi_day,delt_day);
+//	assign.OutPutCplexDat_rout(outdir,indir,allflow_day,allflow_day_real,tcam_day,linkpaths_day,Pi_day,delt_day);
+//	assign.Greedy_route(outdir,allflow_day,allflow_day_real,tcam_day,linkpaths_day,Pi_day,delt_day);
+//	assign.Greedy_route2(outdir,allflow_day,allflow_day_real,tcam_day,linkpaths_day,Pi_day,delt_day);
+//	assign.Random_route(outdir,allflow_day,allflow_day_real,tcam_day,linkpaths_day,Pi_day,delt_day);
+//	assign.Original_route(outdir,allflow_day,allflow_day_real,tcam_day,linkpaths_day,Pi_day,delt_day);
+	outdir="./cplex/problem3/lp_node_dat/";
+	assign.LP_node(outdir,indir,allflow_day,allflow_day_real,tcam_day,linkpaths_day,Pi_day,delt_day);
 	
 
 	return 0;
