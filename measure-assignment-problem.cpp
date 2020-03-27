@@ -954,7 +954,7 @@ MeasureAssignmentProblem::OutPutCplexDat_rout(const string&outdir,const string&i
 
 		}
 	}
-	for(int day=1;day<10;day++)
+	for(int day=1;day<2;day++)
 	{
 		string fileName=outdir+"problem4_day"+to_string(day)+".dat";
 		ofstream ofs(fileName.c_str());
@@ -1232,7 +1232,7 @@ MeasureAssignmentProblem::Greedy_route(//贪心算法
 {
 	string file=outdir+"greedy_real_load.txt";
 	ofstream ofs(file.c_str());
-	for(uint32_t day=1;day<10;day++)
+	for(uint32_t day=1;day<2;day++)
 	{
 		//取出每天的数据
 		map<uint32_t,uint32_t>allflow=allflow_day[day-1];
@@ -1310,6 +1310,8 @@ MeasureAssignmentProblem::Greedy_route(//贪心算法
 			}
 		}
 		sort(heavy.begin(),heavy.end(),cmp);
+		timespec time1, time2;
+		clock_gettime(CLOCK_MONOTONIC, &time1);
 		for(auto flow:heavy)
 		{
 			uint32_t key=flow.first;
@@ -1387,6 +1389,12 @@ MeasureAssignmentProblem::Greedy_route(//贪心算法
 				load_real[l]+=allflow_real[key];
 			}
 		}
+		clock_gettime(CLOCK_MONOTONIC, &time2);
+		long long time;
+		time = (long long)(time2.tv_sec - time1.tv_sec) * 1000000000LL + (time2.tv_nsec - time1.tv_nsec);
+		float ms=time/1000000.0;
+	
+		cout<<"time="<<ms<<endl;
 		for(uint32_t l:load_real)
 		{
 			ofs<<l<<" ";
@@ -1410,7 +1418,7 @@ MeasureAssignmentProblem::Greedy_route2(//第二种贪心算法
 {
 	string file=outdir+"greedy2_real_load.txt";
 	ofstream ofs(file.c_str());
-	for(uint32_t day=1;day<10;day++)
+	for(uint32_t day=1;day<2;day++)
 	{
 		//取出每天的数据
 		map<uint32_t,uint32_t>allflow=allflow_day[day-1];
@@ -1487,6 +1495,8 @@ MeasureAssignmentProblem::Greedy_route2(//第二种贪心算法
 				exit(1);
 			}
 		}
+		timespec time1, time2;
+		clock_gettime(CLOCK_MONOTONIC, &time1);
 		sort(heavy.begin(),heavy.end(),cmp);
 		for(auto flow:heavy)
 		{
@@ -1588,6 +1598,11 @@ MeasureAssignmentProblem::Greedy_route2(//第二种贪心算法
 				load_real[l]+=allflow_real[key];
 			}
 		}
+		clock_gettime(CLOCK_MONOTONIC, &time2);
+		long long time;
+		time = (long long)(time2.tv_sec - time1.tv_sec) * 1000000000LL + (time2.tv_nsec - time1.tv_nsec);
+		float ms=time/1000000.0;
+		cout<<"time="<<ms<<endl;
 		for(uint32_t l:load_real)
 		{
 			ofs<<l<<" ";
@@ -1765,6 +1780,7 @@ MeasureAssignmentProblem::LP_node(const string&outdir,const string&indir,//按�
 	{
 		tmp[it->first]=0;
 	}
+	uint32_t fineflownum=tmp.size();//细流总数
 	for(uint32_t day=1;day<=10;day++)
 	{
 		allflow_day.push_back(tmp);
@@ -1781,7 +1797,7 @@ MeasureAssignmentProblem::LP_node(const string&outdir,const string&indir,//按�
 
 		}
 	}
-	for(int day=1;day<10;day++)
+	for(int day=1;day<2;day++)
 	{
 		string fileName=outdir+"lp_node_day"+to_string(day)+".dat";
 		ofstream ofs(fileName.c_str());
@@ -1789,7 +1805,8 @@ MeasureAssignmentProblem::LP_node(const string&outdir,const string&indir,//按�
 		ofstream ofs2(fileName2);
 
 		ofs<<"E="<<m_network->m_topo->m_linkNum<<";"<<endl;//链路数量
-		ofs<<"F="<<m_network->m_fineFlowNum<<';'<<endl;//细流总数
+		//ofs<<"F="<<m_network->m_fineFlowNum<<';'<<endl;//细流总数
+		ofs<<"F="<<fineflownum<<';'<<endl;//细流总数
 		/*****************************************************************************************/	
 		map<uint32_t,uint32_t>tcam=tcam_day[day-1];//tcam中的流
 		uint32_t P=0;//最大可用路径数
@@ -1977,7 +1994,8 @@ MeasureAssignmentProblem::LP_node(const string&outdir,const string&indir,//按�
 		ofs<<"];"<<endl;
 		/****************************************************/
 		vector<vector<vector<uint32_t> > >delt;
-		for(int i=0;i<m_network->m_fineFlowNum;i++)
+		//for(int i=0;i<m_network->m_fineFlowNum;i++)
+		for(int i=0;i<fineflownum;i++)
 		{
 			vector<vector<uint32_t> >t(P,vector<uint32_t>(m_network->m_topo->m_linkNum,0));
 			delt.push_back(t);
